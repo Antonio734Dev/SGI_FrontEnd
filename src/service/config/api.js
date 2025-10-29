@@ -2,7 +2,7 @@ import axios from 'axios'
 
 const api = axios.create({
     credentials: "include",
-    baseURL: process.env.NODE_ENV === 'production' ? '/api' : 'https://labmetricas-backend.onrender.com/api',
+    baseURL: process.env.NODE_ENV === 'production' ? '/api' : 'http://localhost:8080/api',
     timeout: 60000, //60 segundos
     headers: {
 		"Content-Type": 'application/json',

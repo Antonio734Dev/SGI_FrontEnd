@@ -350,9 +350,8 @@ export const UsersDrawer = ({isOpen, onOpenChange, data, action, onRefresh}) => 
                                         </div>
                                     )}
                                 >
-                                    <SelectItem key="3">Operador</SelectItem>
-                                    <SelectItem key="2">Supervisor</SelectItem>
                                     <SelectItem key="1">Administrador</SelectItem>
+                                    <SelectItem key="2">Operador</SelectItem>
                                 </Select>
 
                                 <div className="w-full flex justify-between">

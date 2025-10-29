@@ -384,7 +384,7 @@ export const Home = () => {
                         <div className="w-full">
                             <div className="flex flex-col max-sm:text-center">
                                 <p className="text-lg font-bold">¡Hola, {userName}!</p>
-                                <span className="text-background-500 text-xs line-clamp-2">{user.role === "ADMIN" ? "Mostrando categorías de equipos y tipos de servicios" : "Bienvenido de vuelta"}</span>
+                                <span className="text-background-500 text-xs line-clamp-2">{user.role === "ADMIN" ? "Mostrando Categorías y Artículos" : "Bienvenido de vuelta"}</span>
                             </div>
                         </div>
 
@@ -392,7 +392,7 @@ export const Home = () => {
                         <div className="w-full flex row-start-3 sm:row-start-1 sm:col-start-2 sm:justify-end justify-center sm:pb-0">
                             <ButtonGroup variant="flat" className="n9">
                                 <Button startContent={iconsMap[selectedOptionValue]} onPress={handleCreate} color="primary" variant="shadow" className="font-medium tracking-wide" size="md" radius="sm">
-                                    <span>{selectedOptionValue === "services" ? "Solicitar " : "Registrar "} <span className="lowercase">{labelsMap[selectedOptionValue]}</span></span>
+                                    <span>{selectedOptionValue === "services" ? "Registrar categoría de equipo" : "Registrar "} <span className="lowercase">{labelsMap[selectedOptionValue]}</span></span>
                                 </Button>
                                 <Dropdown placement="bottom-end" className="bg-background-100 w-52 transition-colors duration-1000 ease-in-out" shadow="lg" radius="sm" >
                                     <DropdownTrigger>
@@ -410,7 +410,8 @@ export const Home = () => {
                                         itemClasses={{base:"mb-1"}}
                                     >
                                         {user.role === "ADMIN" && ( <>
-                                        <DropdownItem 
+                                        {/* Categorías comentadas */}
+                                        {/* <DropdownItem 
                                             key="category" 
                                             className="rounded-md transition-all !duration-1000 ease-in-out"
                                             startContent={iconsMap["category"]}
@@ -423,7 +424,7 @@ export const Home = () => {
                                             startContent={iconsMap["type"]}
                                         >
                                             {labelsMap["type"]}
-                                        </DropdownItem>
+                                        </DropdownItem> */}
                                         <DropdownItem 
                                             key="people" 
                                             className="rounded-md transition-all !duration-1000 ease-in-out"
@@ -431,7 +432,8 @@ export const Home = () => {
                                         >
                                             {labelsMap["people"]}
                                         </DropdownItem>
-                                        <DropdownItem 
+                                        {/* Clientes y proveedores comentados */}
+                                        {/* <DropdownItem 
                                             key="customer" 
                                             className="rounded-md transition-all !duration-1000 ease-in-out"
                                             startContent={iconsMap["customer"]}
@@ -444,21 +446,23 @@ export const Home = () => {
                                             startContent={iconsMap["provider"]}
                                         >
                                             {labelsMap["provider"]}
-                                        </DropdownItem> </> )}
-                                        <DropdownItem 
-                                            key="services" 
-                                            className="rounded-md transition-all !duration-1000 ease-in-out"
-                                            startContent={iconsMap["services"]}
-                                        >
-                                            {labelsMap["services"]}
-                                        </DropdownItem>
-                                        <DropdownItem 
-                                            key="equips" 
-                                            className="rounded-md transition-all !duration-1000 ease-in-out"
-                                            startContent={iconsMap["equips"]}
-                                        >
-                                            {labelsMap["equips"]}
-                                        </DropdownItem> 
+                                        </DropdownItem> */}
+                                    </> )}
+                                    {/* Servicios y equipos comentados */}
+                                    {/* <DropdownItem 
+                                        key="services" 
+                                        className="rounded-md transition-all !duration-1000 ease-in-out"
+                                        startContent={iconsMap["services"]}
+                                    >
+                                        {labelsMap["services"]}
+                                    </DropdownItem>
+                                    <DropdownItem 
+                                        key="equips" 
+                                        className="rounded-md transition-all !duration-1000 ease-in-out"
+                                        startContent={iconsMap["equips"]}
+                                    >
+                                        {labelsMap["equips"]}
+                                    </DropdownItem> */}
                                     </DropdownMenu>
                                 </Dropdown>
                             </ButtonGroup>
@@ -467,7 +471,7 @@ export const Home = () => {
 
                     {user.role !== "OPERADOR" ? <>
                         {user.role === "ADMIN" &&
-                        <div className="grid grid-cols-2 grid-rows-2 md:grid-rows-1 md:grid-cols-3 xl:grid-cols-6 gap-4 pb-8 mt-6">
+                        <div className="grid grid-cols-2 grid-rows-2 md:grid-rows-1 md:grid-cols-3 xl:grid-cols-6 gap-4 pb-8 mt-6" style={{display: 'none'}}>
                             {cards.map((c, i) => (
                                 <motion.div
                                     key={c.title}
@@ -488,6 +492,7 @@ export const Home = () => {
 
                         <div className="sm:-m-2 -m-2 xl:gap-0 gap-4 n3 py-6">
                                 <div className={`w-full grid ${user.role === "SUPERVISOR" ? "md:grid-cols-3" : "md:grid-cols-2"} grid-cols-1 md:gap-0 gap-4`}>
+                                    {/* Categorías de equipos y tipos de servicios comentados 
                                     <ScrollShadow className={`bg-transparent flex flex-col gap-2 p-2 
                                     [&::-webkit-scrollbar]:h-1
                                     [&::-webkit-scrollbar]:w-1
@@ -511,6 +516,7 @@ export const Home = () => {
                                                 initial={{ opacity: 0, y: 20 }}
                                                 animate={{ opacity: 1, y: 0 }}
                                                 transition={{ duration: 0.3, delay: item.n * 0.1 }}
+                                                style={{display: 'none'}}
                                             >
                                                 <Card shadow="none" radius="sm" isPressable onPress={() => {handleRead(item, "category"); onModalOpen()}} className="w-full transition-colors !duration-1000 ease-in-out bg-background dark:bg-background-100 shadow-small">
                                                     <CardBody className="px-4 py-2">
@@ -596,6 +602,7 @@ export const Home = () => {
                                                 initial={{ opacity: 0, y: 20 }}
                                                 animate={{ opacity: 1, y: 0 }}
                                                 transition={{ duration: 0.3, delay: item.n * 0.1 }}
+                                                style={{display: 'none'}}
                                             >
                                                 <Card shadow="none" radius="sm" isPressable onPress={() => {handleRead(item, "type"); onModalOpen()}} className="w-full transition-colors !duration-1000 ease-in-out bg-background dark:bg-background-100 shadow-small">
                                                     <CardBody className="px-4 py-2">
@@ -656,7 +663,7 @@ export const Home = () => {
                                                 </Card>
                                             </motion.div>
                                         ))}
-                                    </ScrollShadow>
+                                    </ScrollShadow> */}
                                     {user.role === "SUPERVISOR" && 
                                         <div className="flex flex-col gap-2 px-6 sm:px-4 pt-4">
                                             <p className="text-lg sm:text-xl pb-2">Como supervisor, usted puede:</p>

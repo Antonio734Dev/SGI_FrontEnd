@@ -378,7 +378,7 @@ export const AppLayout = () => {
             icon: <HomeIcon className='sm:size-5 size-6' />,
             path: "/App"
         },
-        {
+        /* {
             label: "Equipos",
             icon: <SettingsCogMultipleFilled className='sm:size-5 size-6' />,
             path: "/App/Equipments"
@@ -387,7 +387,7 @@ export const AppLayout = () => {
             label: "Servicios",
             icon: <WrenchSettingsFilled className='sm:size-5 size-6' />,
             path: "/App/Services"
-        },
+        }, */
     ]
 
     const adminNavigation = [
@@ -402,7 +402,7 @@ export const AppLayout = () => {
             icon: <PeopleFilled className='sm:size-5 size-6' />,
             path: "/App/Users"
         },
-        {
+        /* {
             label: "Clientes",
             icon: <PeopleToolboxFilled className='sm:size-5 size-6' />,
             path: "/App/Customers"
@@ -411,7 +411,7 @@ export const AppLayout = () => {
             label: "Proveedores de servicio",
             icon: <PersonWrenchFilled className='size-5' />,
             path: "/App/ServiceProviders"
-        }
+        } */
     ]
 
     const operadorNavigation = [
@@ -425,11 +425,11 @@ export const AppLayout = () => {
             icon: <PeopleFilled className='sm:size-5 size-6' />,
             path: "/App/Users"
         },
-        {
+        /* {
             label: "Proveedores de servicio",
             icon: <PersonWrenchFilled className='size-5' />,
             path: "/App/ServiceProviders"
-        }
+        } */
     ]
     
     let roleSidebarNavigation
@@ -485,8 +485,8 @@ export const AppLayout = () => {
                             {/* NAVBAR */}
                             <div className="flex-shrink-0 h-[72px] bg-background rounded-lg transition-colors duration-1000 ease-in-out flex sm:z-auto z-50 dark:shadow-large shadow-medium">
                                 <div className="px-4 justify-center w-96 hidden sm:flex flex-col">
-                                    <p className="text-base font-medium">Nombre del sistema</p>
-                                    <p className="text-xs text-background-500">Lab Métricas SA de CV.</p>
+                                    <p className="text-base font-medium">SGI - Sistema de gestión de inventario</p>
+                                    <p className="text-xs text-background-500">Creparis S.A de C.V.</p>
                                 </div>
 
                                 <div className="px-4 flex w-full justify-end items-center sm:gap-4 gap-2">

@@ -27,7 +27,7 @@ export const Login = () => {
         try {
             setIsLoading(true);
 
-            const response = await fetch("https://labmetricas-backend.onrender.com/api/auth/login", {
+            const response = await fetch("http://localhost:8080/api/auth/login", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(data),
@@ -169,7 +169,7 @@ export const Login = () => {
                 </div>
 
                 <div className="fixed bottom-0 left-0 w-full pb-4 pt-4 backdrop-blur-lg">
-                    <p className="sm:text-sm text-xs text-center">© 2025 Lab Métricas. Todos los derechos reservados.</p>
+                    <p className="sm:text-sm text-xs text-center">© 2025 Creparis, S.A. de C.V. Todos los derechos reservados.</p>
                 </div>
             </div>
         </>
