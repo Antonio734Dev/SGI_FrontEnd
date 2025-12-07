@@ -2,7 +2,7 @@ import axios from 'axios'
 
 const api = axios.create({
     credentials: "include",
-    baseURL: 'https://sgi-backend-ok03.onrender.com/api',
+    baseURL: process.env.NODE_ENV === 'production' ? '/api' : 'https://sgi-backend-ok03.onrender.com/api',
     timeout: 60000, //60 segundos
     headers: {
 		"Content-Type": 'application/json',
