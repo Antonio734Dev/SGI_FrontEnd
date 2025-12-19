@@ -21,6 +21,10 @@ import { Page404 } from './pages/Page404.jsx';
 import { TourProvider, useTour } from '@reactour/tour';
 import { MaintenanceProviders } from './pages/MaintenanceProviders.jsx';
 import { ForgotPassword } from './pages/ForgotPassword.jsx';
+import { ProductStatuses } from './pages/ProductStatuses.jsx';
+import { StockCatalogues } from './pages/StockCatalogues.jsx';
+import { Products } from './pages/Products.jsx';
+import { Dashboard } from './pages/Dashboard.jsx';
 
 function ProtectedRoute({ allowedRoles = [], children }) {
 	const { user } = useAuth()
@@ -51,11 +55,19 @@ const getStepsFor = (pathname) => {
 				},
 				{
 					selector: '.n2',
-					content: 'Este es el título de la sección: te indica en qué módulo o tabla te encuentras actualmente.',
+					content: 'Puedes buscar lo que necesites en esta barra de búsqueda.',
 				},
 				{
 					selector: '.n3',
-					content: 'En esta parte se listan todos los registros existentes; desplázate o haz scroll lateral para ver cada columna.',
+					content: 'Aquí puedes cambiar el tema de la aplicación, ver tu perfil, notificaciones y cerrar sesión.',
+				},
+				{
+					selector: '.n4',
+					content: 'Este es tu Dashboard principal. Aquí puedes ver estadísticas generales, productos por estado, alertas de stock bajo y productos recientes.',
+				},
+				{
+					selector: '.n5',
+					content: 'Haz clic en cualquier tarjeta para navegar a la sección correspondiente y ver más detalles.',
 				},
 				{
 					selector: '.n6',
@@ -252,7 +264,7 @@ createRoot(document.getElementById('root')).render(
 										index
 										element={
 											<ProtectedRoute allowedRoles={[]}>
-												<Home />
+												<Dashboard />
 											</ProtectedRoute>
 										}
 									/>
@@ -261,6 +273,30 @@ createRoot(document.getElementById('root')).render(
 										element={
 											<ProtectedRoute allowedRoles={[]}>
 												<Equipments />
+											</ProtectedRoute>
+										}
+									/>
+									<Route
+										path='Products'
+										element={
+											<ProtectedRoute allowedRoles={[]}>
+												<Products />
+											</ProtectedRoute>
+										}
+									/>
+									<Route
+										path='StockCatalogues'
+										element={
+											<ProtectedRoute allowedRoles={['ADMIN', 'SUPERVISOR']}>
+												<StockCatalogues />
+											</ProtectedRoute>
+										}
+									/>
+									<Route
+										path='ProductStatuses'
+										element={
+											<ProtectedRoute allowedRoles={['ADMIN', 'SUPERVISOR']}>
+												<ProductStatuses />
 											</ProtectedRoute>
 										}
 									/>

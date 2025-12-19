@@ -1,4 +1,4 @@
-import { AlertFilled, ArrowSyncCheckmarkFilled, ArrowSyncCircleFilled, BookQuestionMarkFilled, BuildingPeopleFilled, CheckmarkCircleFilled, ClockBillFilled, DatabaseSearchFilled, DataLineFilled, Dismiss12Filled, DismissCircleFilled, DismissFilled, DockFilled, DocumentBulletListClockFilled, DocumentMultipleFilled, DocumentTextClockFilled, DoorArrowLeftFilled, EditFilled, EmojiHandFilled, EmojiSadFilled, EyeFilled, EyeOffFilled, InfoFilled, InfoSparkleFilled, KeyMultipleFilled, KeyResetFilled, MoreCircleFilled, MoreHorizontalFilled, PeopleFilled, PeopleListFilled, PeopleSettingsFilled, PeopleStarFilled, PeopleToolboxFilled, PersonArrowLeftFilled, PersonBriefcaseFilled, PersonFilled, PersonHeartFilled, PersonSearchFilled, PersonSettingsFilled, PersonSquareFilled, PersonWrenchFilled, ScriptFilled, SearchFilled, SearchSparkleFilled, SettingsCogMultipleFilled, SettingsFilled, TagFilled, TextAsterisk16Filled, TextBulletListFilled, WeatherMoonFilled, WeatherSunnyFilled, WrenchSettingsFilled } from "@fluentui/react-icons"
+import { AlertFilled, ArrowSyncCheckmarkFilled, ArrowSyncCircleFilled, BookQuestionMarkFilled, BuildingPeopleFilled, CheckmarkCircleFilled, ClockBillFilled, DatabaseSearchFilled, DataLineFilled, Dismiss12Filled, DismissCircleFilled, DismissFilled, DockFilled, DocumentBulletListClockFilled, DocumentMultipleFilled, DocumentTextClockFilled, DoorArrowLeftFilled, EditFilled, EmojiHandFilled, EmojiSadFilled, EyeFilled, EyeOffFilled, InfoFilled, InfoSparkleFilled, KeyMultipleFilled, KeyResetFilled, MoreCircleFilled, MoreHorizontalFilled, PeopleFilled, PeopleListFilled, PeopleSettingsFilled, PeopleStarFilled, PeopleToolboxFilled, PersonArrowLeftFilled, PersonBriefcaseFilled, PersonFilled, PersonHeartFilled, PersonSearchFilled, PersonSettingsFilled, PersonSquareFilled, PersonWrenchFilled, ScriptFilled, SearchFilled, SearchSparkleFilled, SettingsCogMultipleFilled, SettingsFilled, TagFilled, TextAsterisk16Filled, TextBulletListFilled, WeatherMoonFilled, WeatherSunnyFilled, WrenchSettingsFilled, BoxFilled, BoxMultipleFilled, GridFilled } from "@fluentui/react-icons"
 import { Bars3Icon, ClockIcon, EyeIcon, EyeSlashIcon, HomeIcon, MoonIcon, SunIcon } from "@heroicons/react/24/solid"
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom"
 import { useIsIconOnly, useIsIconOnlySmallMedium } from "../hooks/useIsIconOnly"
@@ -374,8 +374,8 @@ export const AppLayout = () => {
 
     const navigation = [
         {
-            label: "Inicio",
-            icon: <HomeIcon className='sm:size-5 size-6' />,
+            label: "Dashboard",
+            icon: <GridFilled className='sm:size-5 size-6' />,
             path: "/App"
         },
         /* {
@@ -392,6 +392,21 @@ export const AppLayout = () => {
 
     const adminNavigation = [
         ...navigation,
+        {
+            label: "Productos",
+            icon: <BoxFilled className='sm:size-5 size-6' />,
+            path: "/App/Products"
+        },
+        {
+            label: "Catálogos",
+            icon: <BoxMultipleFilled className='sm:size-5 size-6' />,
+            path: "/App/StockCatalogues"
+        },
+        {
+            label: "Estados",
+            icon: <CheckmarkCircleFilled className='sm:size-5 size-6' />,
+            path: "/App/ProductStatuses"
+        },
         {
             label: "Logs",
             icon: <ScriptFilled className='sm:size-5 size-6' />,
@@ -416,10 +431,30 @@ export const AppLayout = () => {
 
     const operadorNavigation = [
         ...navigation,
+        {
+            label: "Productos",
+            icon: <BoxFilled className='sm:size-5 size-6' />,
+            path: "/App/Products"
+        },
     ]
 
     const supervisorNavigation = [
         ...navigation,
+        {
+            label: "Productos",
+            icon: <BoxFilled className='sm:size-5 size-6' />,
+            path: "/App/Products"
+        },
+        {
+            label: "Catálogos",
+            icon: <BoxMultipleFilled className='sm:size-5 size-6' />,
+            path: "/App/StockCatalogues"
+        },
+        {
+            label: "Estados",
+            icon: <CheckmarkCircleFilled className='sm:size-5 size-6' />,
+            path: "/App/ProductStatuses"
+        },
         {
             label: "Usuarios",
             icon: <PeopleFilled className='sm:size-5 size-6' />,
@@ -530,16 +565,17 @@ export const AppLayout = () => {
                                 [&::-webkit-scrollbar-thumb]:rounded-full
                                 [&::-webkit-scrollbar-thumb]:bg-transparent">
                                     <div className="flex-shrink-0 lg:px-4 w-full lg:items-start items-center flex flex-col pt-4 gap-1">
-                                        <p className="text-base hidden lg:flex font-medium">Bienvenido de vuelta {profile.roleName === "ADMIN" ? "administrador" : profile.roleName.toLowerCase()}</p>
+                                        <p className="text-lg hidden lg:flex font-bold">Dashboard</p>
+                                        <p className="text-sm hidden lg:flex text-background-500">Bienvenido de vuelta {profile.name}</p>
 
                                         <p className="text-xs text-background-500 hidden lg:flex pt-6">Páginas</p>
                                         {roleSidebarNavigation.map(({ label, icon, path }) => (
                                             <SidebarButton
                                                 isActive={getIsActive(path)}
-                                                isIconOnly={isIconOnly}
                                                 key={label}
+                                                isIconOnly={isIconOnly}
                                                 label={label}
-                                                startContent={icon}
+                                                startContent={<div className="size-5 flex items-center justify-center">{icon}</div>}
                                                 onPress={() => {navigate(path); setSearchValue("")}}
                                             />
                                         ))}
