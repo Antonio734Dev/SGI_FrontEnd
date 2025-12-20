@@ -50,6 +50,7 @@ export const ProductsModal = ({isOpen, onOpenChange, data, initialData, action, 
                 productStatusId: parseInt(data.productStatusId),
                 unitOfMeasurementId: parseInt(data.unitOfMeasurementId),
                 warehouseTypeId: parseInt(data.warehouseTypeId),
+                nombre: data.nombre?.trim(),
                 lote: data.lote?.trim(),
                 loteProveedor: data.loteProveedor?.trim(),
                 numeroSerie: data.numeroSerie?.trim() || null,
@@ -116,6 +117,7 @@ export const ProductsModal = ({isOpen, onOpenChange, data, initialData, action, 
                                 </Tooltip>
                             )}
                         </div>
+                        {product.nombre && <p className="text-sm break-all"><span className="font-medium">Nombre: </span>{product.nombre}</p>}
                         <p className="text-sm break-all"><span className="font-medium">Lote Proveedor: </span>{product.loteProveedor}</p>
                         {product.numeroSerie && <p className="text-sm break-all"><span className="font-medium">N° Serie: </span>{product.numeroSerie}</p>}
                         {product.stockCatalogueName && <p className="text-sm break-all"><span className="font-medium">Catálogo: </span>{product.stockCatalogueName}</p>}

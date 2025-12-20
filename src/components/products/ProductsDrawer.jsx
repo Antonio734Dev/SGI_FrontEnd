@@ -27,6 +27,7 @@ export const ProductsDrawer = ({isOpen, onOpenChange, data, action, onRefresh}) 
         unitOfMeasurementCode: data?.unitOfMeasurementCode || "",
         warehouseTypeId: data?.warehouseTypeId != null ? String(data.warehouseTypeId) : "",
         warehouseTypeName: data?.warehouseTypeName || "",
+        nombre: data?.nombre != null ? String(data.nombre) : "",
         lote: data?.lote != null ? String(data.lote) : "",
         loteProveedor: data?.loteProveedor != null ? String(data.loteProveedor) : "",
         numeroSerie: data?.numeroSerie != null ? String(data.numeroSerie) : "",
@@ -47,6 +48,7 @@ export const ProductsDrawer = ({isOpen, onOpenChange, data, action, onRefresh}) 
         productStatusId: [],
         unitOfMeasurementId: [],
         warehouseTypeId: [],
+        nombre: [],
         lote: [],
         loteProveedor: [],
         numeroSerie: [],
@@ -98,6 +100,7 @@ export const ProductsDrawer = ({isOpen, onOpenChange, data, action, onRefresh}) 
             unitOfMeasurementCode: data?.unitOfMeasurementCode || "",
             warehouseTypeId: data?.warehouseTypeId != null ? String(data.warehouseTypeId) : "",
             warehouseTypeName: data?.warehouseTypeName || "",
+            nombre: data?.nombre != null ? String(data.nombre) : "",
             lote: data?.lote != null ? String(data.lote) : "",
             loteProveedor: data?.loteProveedor != null ? String(data.loteProveedor) : "",
             numeroSerie: data?.numeroSerie != null ? String(data.numeroSerie) : "",
@@ -146,6 +149,7 @@ export const ProductsDrawer = ({isOpen, onOpenChange, data, action, onRefresh}) 
             unitOfMeasurementCode: "",
             warehouseTypeId: "", 
             warehouseTypeName: "",
+            nombre: "",
             lote: "", 
             loteProveedor: "", 
             numeroSerie: "", 
@@ -165,6 +169,7 @@ export const ProductsDrawer = ({isOpen, onOpenChange, data, action, onRefresh}) 
             productStatusId: [], 
             unitOfMeasurementId: [], 
             warehouseTypeId: [], 
+            nombre: [],
             lote: [], 
             loteProveedor: [], 
             numeroSerie: [], 
@@ -220,6 +225,7 @@ export const ProductsDrawer = ({isOpen, onOpenChange, data, action, onRefresh}) 
         productStatusId: [required],
         unitOfMeasurementId: [required],
         warehouseTypeId: [required],
+        nombre: [required],
         lote: [required],
         loteProveedor: [required],
         numeroSerie: [],
@@ -290,6 +296,7 @@ export const ProductsDrawer = ({isOpen, onOpenChange, data, action, onRefresh}) 
             productStatusId: runValidators(formData.productStatusId, validators.productStatusId),
             unitOfMeasurementId: runValidators(formData.unitOfMeasurementId, validators.unitOfMeasurementId),
             warehouseTypeId: runValidators(formData.warehouseTypeId, validators.warehouseTypeId),
+            nombre: runValidators(formData.nombre, validators.nombre),
             lote: runValidators(formData.lote, validators.lote),
             loteProveedor: runValidators(formData.loteProveedor, validators.loteProveedor),
             codigoProducto: runValidators(formData.codigoProducto, validators.codigoProducto),
@@ -323,6 +330,7 @@ export const ProductsDrawer = ({isOpen, onOpenChange, data, action, onRefresh}) 
             productStatusId: [], 
             unitOfMeasurementId: [], 
             warehouseTypeId: [], 
+            nombre: [],
             lote: [], 
             loteProveedor: [], 
             numeroSerie: [], 
@@ -447,6 +455,36 @@ export const ProductsDrawer = ({isOpen, onOpenChange, data, action, onRefresh}) 
                                         </SelectItem>
                                     ))}
                                 </Select>
+
+                                <Input
+                                    label={
+                                        <div className="flex items-center gap-1">
+                                            <p className="font-medium text-sm">Nombre</p>
+                                            <TextAsteriskFilled className="size-3 text-background-500 group-data-[focus=true]:text-primary group-data-[invalid=true]:!text-danger"/>
+                                        </div>
+                                    }
+                                    classNames={{ label: "font-medium !text-current transition-colors !duration-1000 ease-in-out", input: "transition-colors !duration-1000 ease-in-out font-medium !placeholder-background-500 placeholder:!font-normal", inputWrapper: "transition-colors !duration-1000 ease-in-out caret-primary bg-background-100 group-data-[hover=true]:border-background-200 group-data-[focus=true]:!border-primary border-transparent text-current" }}
+                                    name="nombre"
+                                    labelPlacement="outside"
+                                    type="text"
+                                    radius="sm"
+                                    variant="bordered"
+                                    maxLength={200}
+                                    isReadOnly={action !== 'create' && action !== 'update'}
+                                    placeholder={action === "create" ? "Ingrese el nombre" : data?.nombre}
+                                    value={product.nombre}
+                                    onValueChange={(value) => handleInputChange('nombre', value)}
+                                    isInvalid={(productErrors.nombre || []).length > 0}
+                                    errorMessage={() => (
+                                        <div className="flex text-danger">
+                                            <ul>
+                                                {(productErrors.nombre || []).map((error, i) => (
+                                                    <li key={i}>{error}</li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                    )}
+                                />
 
                                 <Select
                                     aria-label="Estado del Producto"
@@ -613,6 +651,11 @@ export const ProductsDrawer = ({isOpen, onOpenChange, data, action, onRefresh}) 
                                     labelPlacement="outside"
                                     radius="sm"
                                     variant="bordered"
+                                    renderValue={(items) => {
+                                        const item = Array.from(items)[0]
+                                        if (!item) return action === "create" ? "Seleccione un tipo" : (product.warehouseTypeName || data?.warehouseTypeName || "Seleccione un tipo")
+                                        return item.textValue
+                                    }}
                                     placeholder={
                                         action === "create"
                                             ? "Seleccione un tipo"
@@ -641,7 +684,7 @@ export const ProductsDrawer = ({isOpen, onOpenChange, data, action, onRefresh}) 
                                     )}
                                 >
                                     {warehouseTypes.map((type) => (
-                                        <SelectItem key={String(type.id)} value={String(type.id)}>
+                                        <SelectItem key={String(type.id)} value={String(type.id)} textValue={type.name}>
                                             {type.name} ({type.code})
                                         </SelectItem>
                                     ))}
@@ -699,6 +742,11 @@ export const ProductsDrawer = ({isOpen, onOpenChange, data, action, onRefresh}) 
                                         labelPlacement="outside"
                                         radius="sm"
                                         variant="bordered"
+                                        renderValue={(items) => {
+                                            const item = Array.from(items)[0]
+                                            if (!item) return action === "create" ? "Seleccione una unidad" : (product.unitOfMeasurementName || data?.unitOfMeasurementName || "Seleccione una unidad")
+                                            return item.textValue
+                                        }}
                                         placeholder={
                                             action === "create"
                                                 ? "Seleccione una unidad"
@@ -728,7 +776,7 @@ export const ProductsDrawer = ({isOpen, onOpenChange, data, action, onRefresh}) 
                                         )}
                                     >
                                         {units.map((unit) => (
-                                            <SelectItem key={String(unit.id)} value={String(unit.id)}>
+                                            <SelectItem key={String(unit.id)} value={String(unit.id)} textValue={unit.name}>
                                                 {unit.name} ({unit.code})
                                             </SelectItem>
                                         ))}

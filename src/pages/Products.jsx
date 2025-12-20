@@ -113,6 +113,7 @@ export const Products = () => {
     
         if (hasSearchFilter) {
             filteredProducts = filteredProducts.filter((product) =>
+                product.nombre?.toLowerCase().includes(searchValue.toLowerCase()) ||
                 product.stockCatalogueName?.toLowerCase().includes(searchValue.toLowerCase()) ||
                 product.lote?.toLowerCase().includes(searchValue.toLowerCase()) ||
                 product.numeroSerie?.toLowerCase().includes(searchValue.toLowerCase()) ||
@@ -451,6 +452,10 @@ export const Products = () => {
                                         <div className="w-7 flex-shrink-0 ml-4">
                                             #
                                         </div>
+
+                                        <div className="flex-1 min-w-0 max-w-[15%]">
+                                            Nombre
+                                        </div>
                                         
                                         <div className="flex-1 min-w-0 max-w-[15%]">
                                             Catálogo
@@ -485,7 +490,15 @@ export const Products = () => {
                                         </div>
                                         
                                         <div className="flex-1 min-w-0 max-w-[10%] text-center">
-                                            Stock
+                                            Ingreso
+                                        </div>
+
+                                        <div className="flex-1 min-w-0 max-w-[10%] text-center">
+                                            Caducidad
+                                        </div>
+
+                                        <div className="flex-1 min-w-0 max-w-[10%] text-center">
+                                            Reanálisis
                                         </div>
                                         
                                         <div className="flex-1 min-w-0 max-w-[10%]">
@@ -536,10 +549,11 @@ export const Products = () => {
                                                     <div>
                                                         <div className="xs:flex xs:items-center xs:gap-2 pb-2">
                                                             <div className="flex gap-1 pb-1 items-end">
-                                                                <p className="text-sm font-medium break-all line-clamp-1">{item.stockCatalogueName}</p>
+                                                                <p className="text-sm font-medium break-all line-clamp-1">{item.nombre || "-"}</p>
                                                             </div>
                                                             <p className="text-xs text-background-500 pb-[2px]">#{item.n}</p>
                                                         </div>
+                                                        {item.stockCatalogueName && <p className="text-xs text-background-500 max-w-full break-all line-clamp-1"><span className="text-background-700 font-medium">Catálogo: </span>{item.stockCatalogueName}</p>}
                                                         <p className="text-xs text-background-500 max-w-full break-all line-clamp-1"><span className="text-background-700 font-medium">Lote: </span>{item.lote}</p>
                                                         {item.numeroSerie && <p className="text-xs text-background-500 max-w-full break-all line-clamp-1"><span className="text-background-700 font-medium">N° Serie: </span>{item.numeroSerie}</p>}
                                                         {item.codigoProducto && <p className="text-xs text-background-500 max-w-full break-all line-clamp-1"><span className="text-background-700 font-medium">Código Prod.: </span>{item.codigoProducto}</p>}
@@ -547,11 +561,12 @@ export const Products = () => {
                                                         {item.unitOfMeasurementName && <p className="text-xs text-background-500 max-w-full break-all line-clamp-1"><span className="text-background-700 font-medium">Unidad: </span>{item.unitOfMeasurementName}</p>}
                                                         {item.warehouseTypeName && <p className="text-xs text-background-500 max-w-full break-all line-clamp-1"><span className="text-background-700 font-medium">Almacén: </span>{item.warehouseTypeName}</p>}
                                                         <p className="text-xs text-background-500 max-w-full break-all line-clamp-1"><span className="text-background-700 font-medium">Estado: </span>{item.productStatusName}</p>
-                                                        <p className="text-xs text-background-500 max-w-full break-all line-clamp-1"><span className="text-background-700 font-medium">Stock: </span>{item.cantidadTotal}</p>
+                                                        {item.fecha && <p className="text-xs text-background-500 max-w-full break-all line-clamp-1"><span className="text-background-700 font-medium">Ingreso: </span>{formatDateLiteral(item.fecha, true)}</p>}
+                                                        {item.caducidad && <p className="text-xs text-background-500 max-w-full break-all line-clamp-1"><span className="text-background-700 font-medium">Caducidad: </span>{formatDateLiteral(item.caducidad, true)}</p>}
+                                                        {item.reanalisis && <p className="text-xs text-background-500 max-w-full break-all line-clamp-1"><span className="text-background-700 font-medium">Reanálisis: </span>{formatDateLiteral(item.reanalisis, true)}</p>}
                                                         {item.fabricante && <p className="text-xs text-background-500 max-w-full break-all line-clamp-1"><span className="text-background-700 font-medium">Fabricante: </span>{item.fabricante}</p>}
                                                         {item.distribuidor && <p className="text-xs text-background-500 max-w-full break-all line-clamp-1"><span className="text-background-700 font-medium">Distribuidor: </span>{item.distribuidor}</p>}
-                                                        {item.caducidad && <p className="text-xs text-background-500 max-w-full break-all line-clamp-1"><span className="text-background-700 font-medium">Caducidad: </span>{formatDateLiteral(item.caducidad, true)}</p>}
-                                                        <p className="text-xs text-background-500 max-w-full break-all line-clamp-1"><span className="text-background-700 font-medium">Fecha: </span>{formatDateLiteral(item.createdAt, true)}</p>
+                                                        <p className="text-xs text-background-500 max-w-full break-all line-clamp-1"><span className="text-background-700 font-medium">Creación: </span>{formatDateLiteral(item.createdAt, true)}</p>
                                                     </div>
                                                     <div className="flex items-center pl-2">
                                                         <Dropdown placement="bottom-end" className="bg-background dark:bg-background-200 shadow-large transition-colors duration-1000 ease-in-out" offset={28} shadow="lg" radius="sm" classNames={{content: "min-w-44"}}>
@@ -613,6 +628,12 @@ export const Products = () => {
                                                             {item.n}
                                                         </p>
                                                     </div>
+
+                                                    <div className="flex-1 min-w-0 max-w-[15%]">
+                                                        <p className="text-sm truncate">
+                                                            {item.nombre || "-"}
+                                                        </p>
+                                                    </div>
                                                     
                                                     <div className="flex-1 min-w-0 max-w-[15%]">
                                                         <p className="text-sm truncate">
@@ -664,7 +685,19 @@ export const Products = () => {
                                                     
                                                     <div className="flex-1 min-w-0 max-w-[10%]">
                                                         <p className="text-sm truncate text-center">
-                                                            {item.cantidadTotal}
+                                                            {item.fecha ? formatDateLiteral(item.fecha) : "-"}
+                                                        </p>
+                                                    </div>
+
+                                                    <div className="flex-1 min-w-0 max-w-[10%]">
+                                                        <p className="text-sm truncate text-center">
+                                                            {item.caducidad ? formatDateLiteral(item.caducidad) : "-"}
+                                                        </p>
+                                                    </div>
+
+                                                    <div className="flex-1 min-w-0 max-w-[10%]">
+                                                        <p className="text-sm truncate text-center">
+                                                            {item.reanalisis ? formatDateLiteral(item.reanalisis) : "-"}
                                                         </p>
                                                     </div>
                                                     
