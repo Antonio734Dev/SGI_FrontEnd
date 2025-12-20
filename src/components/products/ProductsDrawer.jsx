@@ -512,7 +512,7 @@ export const ProductsDrawer = ({isOpen, onOpenChange, data, action, onRefresh}) 
                                                 <TextAsteriskFilled className="size-3 text-background-500 group-data-[focus=true]:text-primary group-data-[invalid=true]:!text-danger"/>
                                             </div>
                                         }
-                                        classNames={{ label: "font-medium !text-current transition-colors !duration-1000 ease-in-out", input: "transition-colors !duration-1000 ease-in-out font-medium !placeholder-background-500 placeholder:!font-normal", inputWrapper: "transition-colors !duration-1000 ease-in-out caret-primary bg-background-100 group-data-[hover=true]:border-background-200 group-data-[focus=true]:!border-primary border-transparent text-current py-1" }}
+                                        classNames={{ label: "font-medium !text-current transition-colors !duration-1000 ease-in-out", input: `transition-colors !duration-1000 ease-in-out font-medium !placeholder-background-500 placeholder:!font-normal ${(action === 'create' || action === 'update') && !product.fechaIngreso ? 'text-background-500 focus:text-current' : 'text-current'}`, inputWrapper: "transition-colors !duration-1000 ease-in-out caret-primary bg-background-100 group-data-[hover=true]:border-background-200 group-data-[focus=true]:!border-primary border-transparent text-current py-1" }}
                                         name="fechaIngreso"
                                         labelPlacement="outside"
                                         type={action === 'create' || action === 'update' ? "date" : "text"}
@@ -540,7 +540,7 @@ export const ProductsDrawer = ({isOpen, onOpenChange, data, action, onRefresh}) 
                                                 <TextAsteriskFilled className="size-3 text-background-500 group-data-[focus=true]:text-primary group-data-[invalid=true]:!text-danger"/>
                                             </div>
                                         }
-                                        classNames={{ label: "font-medium !text-current transition-colors !duration-1000 ease-in-out", input: "transition-colors !duration-1000 ease-in-out font-medium !placeholder-background-500 placeholder:!font-normal", inputWrapper: "transition-colors !duration-1000 ease-in-out caret-primary bg-background-100 group-data-[hover=true]:border-background-200 group-data-[focus=true]:!border-primary border-transparent text-current py-1" }}
+                                        classNames={{ label: "font-medium !text-current transition-colors !duration-1000 ease-in-out", input: `transition-colors !duration-1000 ease-in-out font-medium !placeholder-background-500 placeholder:!font-normal ${(action === 'create' || action === 'update') && !product.fechaCaducidad ? 'text-background-500 focus:text-current' : 'text-current'}`, inputWrapper: "transition-colors !duration-1000 ease-in-out caret-primary bg-background-100 group-data-[hover=true]:border-background-200 group-data-[focus=true]:!border-primary border-transparent text-current py-1" }}
                                         name="fechaCaducidad"
                                         labelPlacement="outside"
                                         type={action === 'create' || action === 'update' ? "date" : "text"}
@@ -569,7 +569,7 @@ export const ProductsDrawer = ({isOpen, onOpenChange, data, action, onRefresh}) 
                                                 <TextAsteriskFilled className="size-3 text-background-500 group-data-[focus=true]:text-primary group-data-[invalid=true]:!text-danger"/>
                                             </div>
                                         }
-                                        classNames={{ label: "font-medium !text-current transition-colors !duration-1000 ease-in-out", input: "transition-colors !duration-1000 ease-in-out font-medium !placeholder-background-500 placeholder:!font-normal", inputWrapper: "transition-colors !duration-1000 ease-in-out caret-primary bg-background-100 group-data-[hover=true]:border-background-200 group-data-[focus=true]:!border-primary border-transparent text-current py-1" }}
+                                        classNames={{ label: "font-medium !text-current transition-colors !duration-1000 ease-in-out", input: `transition-colors !duration-1000 ease-in-out font-medium !placeholder-background-500 placeholder:!font-normal ${(action === 'create' || action === 'update') && !product.reanalisis ? 'text-background-500 focus:text-current' : 'text-current'}`, inputWrapper: "transition-colors !duration-1000 ease-in-out caret-primary bg-background-100 group-data-[hover=true]:border-background-200 group-data-[focus=true]:!border-primary border-transparent text-current py-1" }}
                                         name="reanalisis"
                                         labelPlacement="outside"
                                         type={action === 'create' || action === 'update' ? "date" : "text"}
