@@ -191,7 +191,7 @@ export const Dashboard = () => {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.3, delay: 0.4 }}
-                        className="flex"
+                        className="w-full"
                     >
                         <Card shadow="sm" radius="lg" className="w-full flex flex-col">
                             <CardBody className="p-6 flex-1">
@@ -214,8 +214,8 @@ export const Dashboard = () => {
                                                     shadow="none"
                                                     radius="lg"
                                                     isPressable
-                                                    onPress={() => navigate(`/App/Products?statusId=${status.id}`)}
-                                                    className="w-full bg-[#c2c2c2] dark:bg-[#2c2c2c] transition-colors duration-300 cursor-pointer"
+                                                    onPress={() => navigate('/App/ProductStatuses')}
+                                                    className="w-full bg-[#e5e5e5] dark:bg-[#2c2c2c] transition-colors duration-300 cursor-pointer"
                                                 >
                                                     <CardBody className="p-4">
                                                         <div className="flex items-center justify-between gap-3">
@@ -245,7 +245,7 @@ export const Dashboard = () => {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.3, delay: 0.5 }}
-                        className="flex"
+                        className="w-full"
                     >
                         <Card shadow="sm" radius="lg" className="w-full flex flex-col">
                             <CardBody className="p-6 flex-1">
@@ -267,23 +267,23 @@ export const Dashboard = () => {
                                         </div>
                                     ) : (
                                         <div className="flex flex-col gap-3 flex-1 min-h-0 overflow-y-auto [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-primary">
-                                            {stats.lowStockProducts.map((product, index) => (
+                                            {stats.lowStockProducts.slice(0, 3).map((product, index) => (
                                                 <motion.div
                                                     key={product.id}
                                                     initial={{ opacity: 0, x: -20 }}
                                                     animate={{ opacity: 1, x: 0 }}
                                                     transition={{ duration: 0.3, delay: 0.6 + index * 0.05 }}
-                                                    className="flex-shrink-0"
+                                                    className="w-full h-full"
                                                 >
                                                     <Card
                                                         shadow="none"
                                                         radius="lg"
                                                         isPressable
                                                         onPress={() => navigate('/App/Products')}
-                                                        className="bg-warning-50 dark:bg-warning-100/10 border border-warning-200 transition-all duration-300 hover:shadow-md hover:-translate-y-1 cursor-pointer"
+                                                        className="w-full bg-warning-50 dark:bg-warning-100/10 border border-warning-200 transition-all duration-300 hover:shadow-md hover:-translate-y-1 cursor-pointer"
                                                     >
                                                         <CardBody className="p-4">
-                                                            <div className="flex items-center justify-between gap-3">
+                                                            <div className="flex items-center justify-between gap-3 w-full">
                                                                 <div className="flex flex-col gap-1 flex-1 min-w-0">
                                                                     <p className="text-sm font-medium line-clamp-1">
                                                                         {product.stockCatalogueName}
@@ -340,7 +340,7 @@ export const Dashboard = () => {
                                                 radius="lg"
                                                 isPressable
                                                 onPress={() => navigate('/App/Products')}
-                                                className="transition-all duration-300 hover:shadow-lg hover:-translate-y-1 cursor-pointer w-full h-full"
+                                                className="bg-[#e5e5e5] dark:bg-[#e5e5e5] transition-all duration-300 hover:shadow-lg hover:-translate-y-1 cursor-pointer w-full h-full"
                                             >
                                                 <CardBody className="p-6">
                                                     <div className="flex items-start justify-between gap-4">
