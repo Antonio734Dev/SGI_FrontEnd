@@ -23,6 +23,8 @@ import { MaintenanceProviders } from './pages/MaintenanceProviders.jsx';
 import { ForgotPassword } from './pages/ForgotPassword.jsx';
 import { ProductStatuses } from './pages/ProductStatuses.jsx';
 import { StockCatalogues } from './pages/StockCatalogues.jsx';
+import { UnitsOfMeasurement } from './pages/UnitsOfMeasurement.jsx';
+import { WarehouseTypes } from './pages/WarehouseTypes.jsx';
 import { Products } from './pages/Products.jsx';
 import { Dashboard } from './pages/Dashboard.jsx';
 
@@ -289,6 +291,22 @@ createRoot(document.getElementById('root')).render(
 										element={
 											<ProtectedRoute allowedRoles={['ADMIN', 'SUPERVISOR']}>
 												<StockCatalogues />
+											</ProtectedRoute>
+										}
+									/>
+									<Route
+										path='UnitsOfMeasurement'
+										element={
+											<ProtectedRoute allowedRoles={['ADMIN', 'SUPERVISOR']}>
+												<UnitsOfMeasurement />
+											</ProtectedRoute>
+										}
+									/>
+									<Route
+										path='WarehouseTypes'
+										element={
+											<ProtectedRoute allowedRoles={['ADMIN', 'SUPERVISOR']}>
+												<WarehouseTypes />
 											</ProtectedRoute>
 										}
 									/>

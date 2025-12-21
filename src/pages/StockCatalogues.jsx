@@ -1,5 +1,5 @@
 import { addToast, Spinner as SpinnerH, Button, Card, CardBody, Dropdown, DropdownItem, DropdownMenu, DropdownSection, DropdownTrigger, Pagination, Popover, PopoverContent, PopoverTrigger, Select, SelectItem, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@heroui/react"
-import { getStockCatalogues } from "../service/product"
+import { getProducts, getStockCatalogues } from "../service/product"
 import { PrimaryButton } from "../components/PrimaryButton"
 import React, { useEffect, useState, useTransition } from "react"
 import { useIsIconOnlyMedium } from "../hooks/useIsIconOnly"
@@ -36,12 +36,25 @@ export const StockCatalogues = () => {
             try {
                 setIsLoading(true)
 
-                const response = await getStockCatalogues()
-                const data = response?.data || []
+                const [cataloguesRes, productsRes] = await Promise.all([
+                    getStockCatalogues(),
+                    getProducts(0, 10000),
+                ])
+
+                const data = cataloguesRes?.data || []
+                const products = productsRes?.data?.content || []
+
+                const productCountByCatalogueId = products.reduce((acc, p) => {
+                    const key = p?.stockCatalogueId
+                    if (key == null) return acc
+                    acc[key] = (acc[key] || 0) + 1
+                    return acc
+                }, {})
 
                 if (Array.isArray(data)) {
                     const dataCount = data.map((item, index) => ({
                         ...item,
+                        totalProductos: productCountByCatalogueId[item.id] ?? item.totalProductos ?? 0,
                         n: index + 1,
                     }))
                     

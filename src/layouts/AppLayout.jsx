@@ -403,6 +403,16 @@ export const AppLayout = () => {
             path: "/App/StockCatalogues"
         },
         {
+            label: "Unidades de medida",
+            icon: <TagFilled className='sm:size-5 size-6' />,
+            path: "/App/UnitsOfMeasurement"
+        },
+        {
+            label: "Tipos de almacén",
+            icon: <DockFilled className='sm:size-5 size-6' />,
+            path: "/App/WarehouseTypes"
+        },
+        {
             label: "Estados",
             icon: <CheckmarkCircleFilled className='sm:size-5 size-6' />,
             path: "/App/ProductStatuses"
@@ -449,6 +459,16 @@ export const AppLayout = () => {
             label: "Catálogos",
             icon: <BoxMultipleFilled className='sm:size-5 size-6' />,
             path: "/App/StockCatalogues"
+        },
+        {
+            label: "Unidades de medida",
+            icon: <TagFilled className='sm:size-5 size-6' />,
+            path: "/App/UnitsOfMeasurement"
+        },
+        {
+            label: "Tipos de almacén",
+            icon: <DockFilled className='sm:size-5 size-6' />,
+            path: "/App/WarehouseTypes"
         },
         {
             label: "Estados",

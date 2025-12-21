@@ -46,10 +46,10 @@ export const Dashboard = () => {
                     color: getStatusColor(status.name)
                 }))
 
-                // Productos recientes (últimos 6)
+                // Productos recientes (últimos 4)
                 const recent = [...products]
                     .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-                    .slice(0, 6)
+                    .slice(0, 4)
 
                 // Productos con stock bajo (stock real = cantidadTotal)
                 const lowStock = products.filter(p => (p.cantidadTotal ?? 0) < 10)
@@ -129,7 +129,7 @@ export const Dashboard = () => {
 
     return (
         <div className="w-full min-h-full px-4 pb-6">
-            <div className="flex flex-col gap-6 w-full">
+            <div className="flex flex-col gap-6 w-full max-w-[1400px] mx-auto">
                 {/* Header */}
                 <div className="flex flex-col gap-2">
                     <p className="text-2xl font-bold">Dashboard</p>
@@ -137,7 +137,7 @@ export const Dashboard = () => {
                 </div>
 
                 {/* Stats Cards - 4 columnas iguales */}
-                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 w-full">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 w-full">
                     {statCards.map((stat, index) => {
                         const getNavigationPath = (title) => {
                             switch(title) {
@@ -161,7 +161,7 @@ export const Dashboard = () => {
                                     radius="lg"
                                     isPressable
                                     onPress={() => navigate(getNavigationPath(stat.title))}
-                                    className="transition-all duration-300 hover:shadow-lg hover:-translate-y-1 cursor-pointer"
+                                    className="transition-all duration-300 hover:shadow-lg hover:-translate-y-1 cursor-pointer w-full h-full"
                                 >
                                     <CardBody className="p-6">
                                         <div className="flex items-start justify-between">
@@ -208,14 +208,14 @@ export const Dashboard = () => {
                                                 initial={{ opacity: 0, x: -20 }}
                                                 animate={{ opacity: 1, x: 0 }}
                                                 transition={{ duration: 0.3, delay: 0.5 + index * 0.1 }}
-                                                className="flex-shrink-0"
+                                                className="w-full"
                                             >
                                                 <Card
                                                     shadow="none"
                                                     radius="lg"
                                                     isPressable
                                                     onPress={() => navigate(`/App/Products?statusId=${status.id}`)}
-                                                    className="bg-background-50 dark:bg-background-100 transition-all duration-300 hover:shadow-md hover:-translate-y-1 cursor-pointer"
+                                                    className="w-full bg-[#c2c2c2] dark:bg-[#2c2c2c] transition-colors duration-300 cursor-pointer"
                                                 >
                                                     <CardBody className="p-4">
                                                         <div className="flex items-center justify-between gap-3">
@@ -326,37 +326,41 @@ export const Dashboard = () => {
                                     <BoxMultipleFilled className="size-5 text-background-500" />
                                 </div>
                                 
-                                <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 w-full">
+                                <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 w-full">
                                     {stats.recentProducts.map((product, index) => (
                                         <motion.div
                                             key={product.id}
                                             initial={{ opacity: 0, scale: 0.9 }}
                                             animate={{ opacity: 1, scale: 1 }}
                                             transition={{ duration: 0.3, delay: 0.7 + index * 0.05 }}
+                                            className="w-full h-full"
                                         >
                                             <Card 
-                                                shadow="none" 
+                                                shadow="sm" 
                                                 radius="lg"
                                                 isPressable
                                                 onPress={() => navigate('/App/Products')}
-                                                className="bg-background-50 dark:bg-background-100 transition-all duration-300 hover:shadow-md hover:-translate-y-1 cursor-pointer h-full"
+                                                className="transition-all duration-300 hover:shadow-lg hover:-translate-y-1 cursor-pointer w-full h-full"
                                             >
-                                                <CardBody className="p-4">
-                                                    <div className="flex flex-col gap-2">
-                                                        <div className="flex items-start justify-between gap-2">
-                                                            <p className="text-sm font-bold line-clamp-2 flex-1">
+                                                <CardBody className="p-6">
+                                                    <div className="flex items-start justify-between gap-4">
+                                                        <div className="flex flex-col gap-2 min-w-0">
+                                                            <p className="text-sm font-medium line-clamp-2">
                                                                 {product.stockCatalogueName}
                                                             </p>
-                                                            <div className={`px-2 py-0.5 rounded-full text-xs font-medium whitespace-nowrap ${getStatusColor(product.productStatusName).replace('text-', 'bg-')}/10 ${getStatusColor(product.productStatusName)}`}>
-                                                                {product.productStatusName}
+                                                            <div className="flex flex-col gap-1">
+                                                                <p className="text-xs text-background-500 truncate">
+                                                                    <span className="font-medium">Lote:</span> {product.lote}
+                                                                </p>
+                                                                <p className="text-xs text-background-500 truncate">
+                                                                    <span className="font-medium">Stock:</span> {product.cantidadSobrante} unidades
+                                                                </p>
                                                             </div>
                                                         </div>
-                                                        <div className="flex flex-col gap-1">
-                                                            <p className="text-xs text-background-500">
-                                                                <span className="font-medium">Lote:</span> {product.lote}
-                                                            </p>
-                                                            <p className="text-xs text-background-500">
-                                                                <span className="font-medium">Stock:</span> {product.cantidadSobrante} unidades
+
+                                                        <div className={`p-3 rounded-lg ${getStatusColor(product.productStatusName).replace('text-', 'bg-')}/10`}>
+                                                            <p className={`text-xs font-bold ${getStatusColor(product.productStatusName)}`}>
+                                                                {product.productStatusName}
                                                             </p>
                                                         </div>
                                                     </div>

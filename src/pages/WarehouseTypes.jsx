@@ -1,27 +1,24 @@
 import { addToast, Spinner as SpinnerH, Button, Card, CardBody, Dropdown, DropdownItem, DropdownMenu, DropdownSection, DropdownTrigger, Pagination, Popover, PopoverContent, PopoverTrigger, Select, SelectItem, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@heroui/react"
-import { getProducts } from "../service/product"
+import { getWarehouseTypes } from "../service/product"
 import { PrimaryButton } from "../components/PrimaryButton"
 import React, { useEffect, useState, useTransition } from "react"
 import { useIsIconOnlyMedium } from "../hooks/useIsIconOnly"
-import { ArrowSortDownLinesFilled, ArrowSortFilled, ArrowSortUpLinesFilled, ChevronDownFilled, CircleFilled, DismissCircleFilled, MoreVerticalFilled, OptionsFilled, AddFilled, EditFilled, DeleteFilled, ScriptFilled, QrCodeFilled } from "@fluentui/react-icons"
+import { ArrowSortDownLinesFilled, ArrowSortFilled, ArrowSortUpLinesFilled, ChevronDownFilled, DismissCircleFilled, MoreVerticalFilled, OptionsFilled, AddFilled, EditFilled, DeleteFilled, ScriptFilled } from "@fluentui/react-icons"
 import { motion } from "framer-motion"
-import { useOutletContext, useSearchParams } from "react-router-dom"
+import { useOutletContext } from "react-router-dom"
 import { formatDateLiteral } from "../js/utils"
 import { useAuth } from "../hooks/useAuth"
-import { ProductsDrawer } from "../components/products/ProductsDrawer"
-import { ProductsDeleteModal } from "../components/products/ProductsDeleteModal"
-import { ProductQRModal } from "../components/products/ProductQRModal"
+import { WarehouseTypesDrawer } from "../components/warehouseTypes/WarehouseTypesDrawer"
+import { WarehouseTypesDeleteModal } from "../components/warehouseTypes/WarehouseTypesDeleteModal"
 
-export const Products = () => {
+export const WarehouseTypes = () => {
     const {user} = useAuth()
-
-    const [searchParams] = useSearchParams()
 
     const [isLoading, setIsLoading] = useState(true)
     const [refreshTrigger, setRefreshTrigger] = useState(false)
     const triggerRefresh = () => setRefreshTrigger(prev => !prev)
 
-    const [products, setProducts] = useState([])
+    const [warehouseTypes, setWarehouseTypes] = useState([])
     const [errors, setErrors] = useState([])
 
     const isIconOnlyMedium = useIsIconOnlyMedium()
@@ -30,9 +27,8 @@ export const Products = () => {
 
     const [isDrawerOpen, setIsDrawerOpen] = useState(false)
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
-    const [isQRModalOpen, setIsQRModalOpen] = useState(false)
 
-    const [selectedProduct, setSelectedProduct] = useState({})
+    const [selectedWarehouseType, setSelectedWarehouseType] = useState({})
     const [action, setAction] = useState("")
 
     useEffect(() => {
@@ -40,30 +36,21 @@ export const Products = () => {
             try {
                 setIsLoading(true)
 
-                const statusId = searchParams.get('statusId')
-                const stockCatalogueId = searchParams.get('stockCatalogueId')
-
-                const response = await getProducts(
-                    0,
-                    100,
-                    stockCatalogueId ? parseInt(stockCatalogueId) : null,
-                    statusId ? parseInt(statusId) : null,
-                )
-
-                const data = response?.data?.content || []
+                const response = await getWarehouseTypes()
+                const data = response?.data || []
 
                 if (Array.isArray(data)) {
                     const dataCount = data.map((item, index) => ({
                         ...item,
                         n: index + 1,
                     }))
-                    
-                    startTransition(() => {
-                        setProducts(dataCount)
 
-                        setSelectedProduct(prev => {
+                    startTransition(() => {
+                        setWarehouseTypes(dataCount)
+
+                        setSelectedWarehouseType(prev => {
                             if (!prev || !prev.id) return null
-                            const updated = dataCount.find(p => p.id === prev.id)
+                            const updated = dataCount.find(wt => wt.id === prev.id)
                             return updated ?? prev
                         })
 
@@ -89,7 +76,7 @@ export const Products = () => {
             }
         }
         fetchData()
-    }, [refreshTrigger, searchParams])
+    }, [refreshTrigger])
 
     const [selectedKeys, setSelectedKeys] = React.useState(new Set([]))
 
@@ -107,57 +94,43 @@ export const Products = () => {
     }, [searchValue])
 
     const hasSearchFilter = Boolean(searchValue)
-    
+
     const filteredItems = React.useMemo(() => {
-        let filteredProducts = [...products]
-    
+        let filteredWarehouseTypes = [...warehouseTypes]
+
         if (hasSearchFilter) {
-            filteredProducts = filteredProducts.filter((product) =>
-                product.nombre?.toLowerCase().includes(searchValue.toLowerCase()) ||
-                product.stockCatalogueName?.toLowerCase().includes(searchValue.toLowerCase()) ||
-                product.lote?.toLowerCase().includes(searchValue.toLowerCase()) ||
-                product.numeroSerie?.toLowerCase().includes(searchValue.toLowerCase()) ||
-                product.fabricante?.toLowerCase().includes(searchValue.toLowerCase()) ||
-                product.distribuidor?.toLowerCase().includes(searchValue.toLowerCase())
+            filteredWarehouseTypes = filteredWarehouseTypes.filter((warehouseType) =>
+                warehouseType.name?.toLowerCase().includes(searchValue.toLowerCase()) ||
+                warehouseType.code?.toLowerCase().includes(searchValue.toLowerCase()) ||
+                warehouseType.description?.toLowerCase().includes(searchValue.toLowerCase())
             )
         }
-    
-        return filteredProducts
-    }, [products, searchValue])
+
+        return filteredWarehouseTypes
+    }, [warehouseTypes, searchValue])
 
     const pages = Math.ceil(filteredItems.length / rowsPerPage)
-    
+
     const items = React.useMemo(() => {
         const start = (page - 1) * rowsPerPage
         const end = start + rowsPerPage
 
         return filteredItems.slice(start, end)
     }, [page, filteredItems, rowsPerPage])
-    
+
     const sortedItems = React.useMemo(() => {
-        return [...filteredItems].sort((a, b) => {
-            let first = a[sortDescriptor.column]
-            let second = b[sortDescriptor.column]
-            
-            // Handle date strings
-            if (sortDescriptor.column === "createdAt") {
-                first = new Date(first).getTime()
-                second = new Date(second).getTime()
-            }
-            
-            // Handle null/undefined values
-            if (first == null) first = ""
-            if (second == null) second = ""
-            
+        return [...items].sort((a, b) => {
+            const first = a[sortDescriptor.column]
+            const second = b[sortDescriptor.column]
             const cmp = first < second ? -1 : first > second ? 1 : 0
 
             return sortDescriptor.direction === "descending" ? -cmp : cmp
         })
-    }, [sortDescriptor, filteredItems])
+    }, [sortDescriptor, items])
 
     const paginatedSortedItems = React.useMemo(() => {
-        return sortedItems.map((product, idx) => ({
-            ...product,
+        return sortedItems.map((warehouseType, idx) => ({
+            ...warehouseType,
             pageIndex: idx,
         }))
     }, [sortedItems])
@@ -166,7 +139,7 @@ export const Products = () => {
         setRowsPerPage(Number(e.target.value))
         setPage(1)
     }, [])
-    
+
     const onSearchChange = React.useCallback((value) => {
         setSearchValue(value)
         setPage(1)
@@ -192,39 +165,34 @@ export const Products = () => {
             : null
     }
 
-    const handleReadProduct = (product) => {
+    const handleReadWarehouseType = (warehouseType) => {
         setAction("")
-        setSelectedProduct(product)
+        setSelectedWarehouseType(warehouseType)
         setIsDrawerOpen(true)
     }
 
-    const handleCreateProduct = () => {
+    const handleCreateWarehouseType = () => {
         setAction("create")
-        setSelectedProduct(null)
+        setSelectedWarehouseType(null)
         setIsDrawerOpen(true)
     }
 
-    const handleUpdateProduct = (product) => {
+    const handleUpdateWarehouseType = (warehouseType) => {
         setAction("update")
-        setSelectedProduct(product)
+        setSelectedWarehouseType(warehouseType)
         setIsDrawerOpen(true)
     }
 
-    const handleDeleteProduct = (product) => {
-        setSelectedProduct(product)
+    const handleDeleteWarehouseType = (warehouseType) => {
+        setSelectedWarehouseType(warehouseType)
         setIsDeleteModalOpen(true)
     }
 
-    const handleViewQR = (product) => {
-        setSelectedProduct(product)
-        setIsQRModalOpen(true)
-    }
-    
     const topContent = React.useMemo(() => {
         const sortOptions = [
             { key: "n", label: "Número" },
-            { key: "stockCatalogueName", label: "Catálogo" },
-            { key: "lote", label: "Lote" },
+            { key: "name", label: "Nombre" },
+            { key: "code", label: "Código" },
             { key: "createdAt", label: "Fecha Creación" },
         ]
 
@@ -235,7 +203,7 @@ export const Products = () => {
         return (
             <div className="flex justify-between gap-4 items-center px-1 n2">
                 <div className="flex flex-col n7">
-                    <p className="text-lg font-bold">Productos</p>
+                    <p className="text-lg font-bold">Tipos de almacén</p>
                     <span className="text-background-500 text-xs">
                         {totalFiltered === 0
                         ? "Sin resultados"
@@ -259,7 +227,7 @@ export const Products = () => {
                         <PopoverContent className="bg-background dark:bg-background-200 transition-colors duration-1000 ease-in-out w-32 shadow-large">
                             <div className="p-1 flex flex-col items-start w-full h-full">
                                 <p className="text-xs text-background-500 pt-1 pb-1">Opciones</p>
-                                
+
                                 <Popover placement="left-start" shadow="lg" radius="sm" crossOffset={-32} offset={11}>
                                     <PopoverTrigger>
                                         <Button
@@ -274,7 +242,7 @@ export const Products = () => {
                                     <PopoverContent className="bg-background dark:bg-background-200 transition-colors duration-1000 ease-in-out w-32 shadow-large">
                                         <div className="p-1 flex flex-col items-start w-full h-full">
                                             <p className="text-xs text-background-500 pt-1 pb-1">Ordenar por:</p>
-                                            
+
                                             {sortOptions.map(opt => (
                                                 <Button
                                                     disableRipple
@@ -298,8 +266,7 @@ export const Products = () => {
                                     aria-label="Select filas"
                                     renderValue={(items) => {
                                         const selectedKey = items.values().next().value?.key
-                                        return <p>Filas: {selectedKey}</p>}
-                                    }
+                                        return <p>Filas: {selectedKey}</p>}}
                                     size="md"
                                     radius="sm"
                                     selectionMode="single"
@@ -330,7 +297,7 @@ export const Products = () => {
                         tooltipPlacement="bottom"
                         label="Registrar"
                         startContent={<AddFilled className="size-5 "/>}
-                        onPress={handleCreateProduct}
+                        onPress={handleCreateWarehouseType}
                     />}
                 </div>
             </div>
@@ -342,11 +309,11 @@ export const Products = () => {
         rowsPerPage,
         onRowsPerPageChange,
         page,
-        products.length,
+        warehouseTypes.length,
         hasSearchFilter,
         sortDescriptor
     ])
-    
+
     const bottomContent = React.useMemo(() => {
         if (filteredItems.length > 0){
             return (
@@ -381,19 +348,19 @@ export const Products = () => {
                 "group-data-[last=true]/tr:first:before:rounded-none",
                 "group-data-[last=true]/tr:last:before:rounded-none",
             ],
-            wrapper: "rounded-[9px] n3 gap-0 overflow-y-auto overflow-x-hidden md:pt-0 md:pb-0 md:pl-2 md:pr-2 p-1 transition-colors duration-1000 bg-transparent [&::-webkit-scrollbar-corner]:bg-transparent [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar]:h-1 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-primary",
+            wrapper: "rounded-[9px] n3 gap-0 overflow-y-auto overflow-x-auto md:pt-0 md:pb-0 md:pl-2 md:pr-2 p-1 transition-colors duration-1000 bg-transparent [&::-webkit-scrollbar-corner]:bg-transparent [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar]:h-1 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-primary",
             base: "h-full",
             table: "bg-transparent",
             emptyWrapper: "text-background-950 text-sm"
         }), [],
     )
-    
+
     return (
         <>
             {isLoading ? (
                 <div className="relative w-full h-full px-1">
-                    <p className="text-lg font-bold">Productos</p>
-            
+                    <p className="text-lg font-bold">Tipos de almacén</p>
+
                     <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
                         <SpinnerH
                             classNames={{ label: "pt-2 text-sm" }}
@@ -405,7 +372,7 @@ export const Products = () => {
                 </div>
             ) : errors.length > 0 ? (
                 <div className="w-full h-full px-1">
-                    <p className="text-lg font-bold">Productos</p>
+                    <p className="text-lg font-bold">Tipos de almacén</p>
 
                     <div className="space-y-4 pt-4">
                         {errors.map((msg, i) => (
@@ -427,12 +394,12 @@ export const Products = () => {
                         ))}
                     </div>
                 </div>
-            ) : products.length > 0 ? (
+            ) : warehouseTypes.length > 0 ? (
                 <Table
                     isHeaderSticky
                     radius="none"
                     shadow="none"
-                    aria-label="Tabla de productos"
+                    aria-label="Tabla de tipos de almacén"
                     topContentPlacement="outside"
                     bottomContentPlacement="inside"
                     hideHeader={isIconOnlyMedium}
@@ -453,66 +420,22 @@ export const Products = () => {
                                             #
                                         </div>
 
-                                        <div className="flex-1 min-w-0 max-w-[15%]">
-                                            Catálogo
+                                        <div className="w-24 flex-shrink-0">
+                                            Código
                                         </div>
 
-                                        <div className="flex-1 min-w-0 max-w-[10%]">
-                                            Estado
-                                        </div>
-
-                                        <div className="flex-1 min-w-0 max-w-[15%]">
+                                        <div className="flex-1 min-w-0 max-w-[25%]">
                                             Nombre
                                         </div>
 
-                                        <div className="flex-1 min-w-0 max-w-[12%]">
-                                            Lote
+                                        <div className="flex-1 min-w-0 max-w-[40%] truncate">
+                                            Descripción
                                         </div>
 
-                                        <div className="flex-1 min-w-0 max-w-[10%]">
-                                            Código Prod.
+                                        <div className="w-40 flex-shrink-0 text-center">
+                                            Fecha de creación
                                         </div>
 
-                                        <div className="flex-1 min-w-0 max-w-[12%]">
-                                            N° Serie
-                                        </div>
-
-                                        <div className="flex-1 min-w-0 max-w-[10%]">
-                                            Fabricante
-                                        </div>
-
-                                        <div className="flex-1 min-w-0 max-w-[10%]">
-                                            Distribuidor
-                                        </div>
-
-                                        <div className="flex-1 min-w-0 max-w-[10%] text-center">
-                                            Ingreso
-                                        </div>
-
-                                        <div className="flex-1 min-w-0 max-w-[10%] text-center">
-                                            Caducidad
-                                        </div>
-
-                                        <div className="flex-1 min-w-0 max-w-[10%] text-center">
-                                            Reanálisis
-                                        </div>
-
-                                        <div className="flex-1 min-w-0 max-w-[10%]">
-                                            Unidad
-                                        </div>
-
-                                        <div className="flex-1 min-w-0 max-w-[10%]">
-                                            Almacén
-                                        </div>
-
-                                        <div className="flex-1 min-w-0 max-w-[10%]">
-                                            N° Análisis
-                                        </div>
-                                        
-                                        <div className="w-32 flex-shrink-0">
-                                            Fecha Creación
-                                        </div>
-                                        
                                         <div className="flex-shrink-0 flex text-center w-16">
                                             Acciones
                                         </div>
@@ -549,24 +472,13 @@ export const Products = () => {
                                                     <div>
                                                         <div className="xs:flex xs:items-center xs:gap-2 pb-2">
                                                             <div className="flex gap-1 pb-1 items-end">
-                                                                <p className="text-sm font-medium break-all line-clamp-1">{item.stockCatalogueName || "-"}</p>
+                                                                <p className="text-sm font-medium break-all line-clamp-1">{item.name}</p>
                                                             </div>
                                                             <p className="text-xs text-background-500 pb-[2px]">#{item.n}</p>
                                                         </div>
-                                                        <p className="text-xs text-background-500 max-w-full break-all line-clamp-1"><span className="text-background-700 font-medium">Estado: </span>{item.productStatusName}</p>
-                                                        <p className="text-xs text-background-500 max-w-full break-all line-clamp-1"><span className="text-background-700 font-medium">Nombre: </span>{item.nombre || "-"}</p>
-                                                        <p className="text-xs text-background-500 max-w-full break-all line-clamp-1"><span className="text-background-700 font-medium">Lote: </span>{item.lote}</p>
-                                                        {item.codigoProducto && <p className="text-xs text-background-500 max-w-full break-all line-clamp-1"><span className="text-background-700 font-medium">Código Prod.: </span>{item.codigoProducto}</p>}
-                                                        {item.numeroSerie && <p className="text-xs text-background-500 max-w-full break-all line-clamp-1"><span className="text-background-700 font-medium">N° Serie: </span>{item.numeroSerie}</p>}
-                                                        {item.fabricante && <p className="text-xs text-background-500 max-w-full break-all line-clamp-1"><span className="text-background-700 font-medium">Fabricante: </span>{item.fabricante}</p>}
-                                                        {item.distribuidor && <p className="text-xs text-background-500 max-w-full break-all line-clamp-1"><span className="text-background-700 font-medium">Distribuidor: </span>{item.distribuidor}</p>}
-                                                        {item.fecha && <p className="text-xs text-background-500 max-w-full break-all line-clamp-1"><span className="text-background-700 font-medium">Ingreso: </span>{formatDateLiteral(item.fecha, true)}</p>}
-                                                        {item.caducidad && <p className="text-xs text-background-500 max-w-full break-all line-clamp-1"><span className="text-background-700 font-medium">Caducidad: </span>{formatDateLiteral(item.caducidad, true)}</p>}
-                                                        {item.reanalisis && <p className="text-xs text-background-500 max-w-full break-all line-clamp-1"><span className="text-background-700 font-medium">Reanálisis: </span>{formatDateLiteral(item.reanalisis, true)}</p>}
-                                                        {item.unitOfMeasurementName && <p className="text-xs text-background-500 max-w-full break-all line-clamp-1"><span className="text-background-700 font-medium">Unidad: </span>{item.unitOfMeasurementName}</p>}
-                                                        {item.warehouseTypeName && <p className="text-xs text-background-500 max-w-full break-all line-clamp-1"><span className="text-background-700 font-medium">Almacén: </span>{item.warehouseTypeName}</p>}
-                                                        {item.numeroAnalisis && <p className="text-xs text-background-500 max-w-full break-all line-clamp-1"><span className="text-background-700 font-medium">N° Análisis: </span>{item.numeroAnalisis}</p>}
-                                                        <p className="text-xs text-background-500 max-w-full break-all line-clamp-1"><span className="text-background-700 font-medium">Creación: </span>{formatDateLiteral(item.createdAt, true)}</p>
+                                                        <p className="text-xs text-background-500 max-w-full break-all line-clamp-1"><span className="text-background-700 font-medium">Código: </span>{item.code}</p>
+                                                        {item.description && <p className="text-xs text-background-500 max-w-full break-all line-clamp-2"><span className="text-background-700 font-medium">Descripción: </span>{item.description}</p>}
+                                                        <p className="text-xs text-background-500 max-w-full break-all line-clamp-1"><span className="text-background-700 font-medium">Fecha de creación: </span>{formatDateLiteral(item.createdAt, true)}</p>
                                                     </div>
                                                     <div className="flex items-center pl-2">
                                                         <Dropdown placement="bottom-end" className="bg-background dark:bg-background-200 shadow-large transition-colors duration-1000 ease-in-out" offset={28} shadow="lg" radius="sm" classNames={{content: "min-w-44"}}>
@@ -577,32 +489,21 @@ export const Products = () => {
                                                             </DropdownTrigger>
                                                             <DropdownMenu aria-label="Acciones" variant="light" itemClasses={{base:"mt-1 mb-2"}}>
                                                                 <DropdownSection title="Acciones" classNames={{ heading: "text-background-500 font-normal"}}>
-                                                                    {item.qrHash && (
-                                                                        <DropdownItem 
-                                                                            className="rounded-md transition-all !duration-1000 ease-in-out w-40"
-                                                                            key="handleViewQR"
-                                                                            startContent={<QrCodeFilled className="size-5"/>}
-                                                                            onPress={() => handleViewQR(item)}
-                                                                        >
-                                                                            Ver código QR
-                                                                        </DropdownItem>
-                                                                    )}
-
                                                                     {user.role === "ADMIN" &&
                                                                     <DropdownItem 
                                                                         className="rounded-md transition-all !duration-1000 ease-in-out w-40"
-                                                                        key="handleUpdateProduct"
+                                                                        key="handleUpdateWarehouseType"
                                                                         startContent={<EditFilled className="size-5"/>}
-                                                                        onPress={() => handleUpdateProduct(item)}
+                                                                        onPress={() => handleUpdateWarehouseType(item)}
                                                                     >
-                                                                        Actualizar producto
+                                                                        Actualizar tipo
                                                                     </DropdownItem>}
 
                                                                     <DropdownItem 
                                                                         className="rounded-md transition-all !duration-1000 ease-in-out w-40 -mt-1"
-                                                                        key="handleReadProduct"
+                                                                        key="handleReadWarehouseType"
                                                                         startContent={<ScriptFilled className="size-5"/>}
-                                                                        onPress={() => handleReadProduct(item)}
+                                                                        onPress={() => handleReadWarehouseType(item)}
                                                                     >
                                                                         Ver más detalles
                                                                     </DropdownItem>
@@ -610,9 +511,9 @@ export const Products = () => {
                                                                     {user.role === "ADMIN" &&
                                                                     <DropdownItem 
                                                                         className="rounded-md transition-all !duration-1000 ease-in-out w-40 -mb-1"
-                                                                        key="handleDeleteProduct"
+                                                                        key="handleDeleteWarehouseType"
                                                                         startContent={<DeleteFilled className="size-5"/>}
-                                                                        onPress={() => handleDeleteProduct(item)}
+                                                                        onPress={() => handleDeleteWarehouseType(item)}
                                                                     >
                                                                         Eliminar
                                                                     </DropdownItem>}
@@ -629,96 +530,30 @@ export const Products = () => {
                                                         </p>
                                                     </div>
 
-                                                    <div className="flex-1 min-w-0 max-w-[15%]">
-                                                        <p className="text-sm truncate">
-                                                            {item.stockCatalogueName}
-                                                        </p>
-                                                    </div>
-                                                    
-                                                    <div className="flex-1 min-w-0 max-w-[10%]">
-                                                        <p className="text-sm truncate">
-                                                            {item.productStatusName}
-                                                        </p>
-                                                    </div>
-                                                    
-                                                    <div className="flex-1 min-w-0 max-w-[12%]">
-                                                        <p className="text-sm truncate">
-                                                            {item.nombre || "-"}
-                                                        </p>
-                                                    </div>
-                                                    
-                                                    <div className="flex-1 min-w-0 max-w-[12%]">
-                                                        <p className="text-sm truncate">
-                                                            {item.lote}
-                                                        </p>
-                                                    </div>
-                                                    
-                                                    <div className="flex-1 min-w-0 max-w-[10%]">
-                                                        <p className="text-sm truncate">
-                                                            {item.codigoProducto || "-"}
-                                                        </p>
-                                                    </div>
-                                                    
-                                                    <div className="flex-1 min-w-0 max-w-[12%]">
-                                                        <p className="text-sm truncate">
-                                                            {item.numeroSerie || "-"}
-                                                        </p>
-                                                    </div>
-                                                    
-                                                    <div className="flex-1 min-w-0 max-w-[10%]">
-                                                        <p className="text-sm truncate">
-                                                            {item.fabricante || "-"}
-                                                        </p>
-                                                    </div>
-                                                    
-                                                    <div className="flex-1 min-w-0 max-w-[10%]">
-                                                        <p className="text-sm truncate">
-                                                            {item.distribuidor || "-"}
-                                                        </p>
-                                                    </div>
-                                                    
-                                                    <div className="flex-1 min-w-0 max-w-[10%]">
+                                                    <div className="w-24 flex-shrink-0">
                                                         <p className="text-sm truncate text-center">
-                                                            {item.fecha ? formatDateLiteral(item.fecha) : "-"}
+                                                            {item.code}
                                                         </p>
                                                     </div>
 
-                                                    <div className="flex-1 min-w-0 max-w-[10%]">
-                                                        <p className="text-sm truncate text-center">
-                                                            {item.caducidad ? formatDateLiteral(item.caducidad) : "-"}
-                                                        </p>
-                                                    </div>
-
-                                                    <div className="flex-1 min-w-0 max-w-[10%]">
-                                                        <p className="text-sm truncate text-center">
-                                                            {item.reanalisis ? formatDateLiteral(item.reanalisis) : "-"}
-                                                        </p>
-                                                    </div>
-
-                                                    <div className="flex-1 min-w-0 max-w-[10%]">
+                                                    <div className="flex-1 min-w-0 max-w-[25%]">
                                                         <p className="text-sm truncate">
-                                                            {item.unitOfMeasurementName || "-"}
-                                                        </p>
-                                                    </div>
-                                                    
-                                                    <div className="flex-1 min-w-0 max-w-[10%]">
-                                                        <p className="text-sm truncate">
-                                                            {item.warehouseTypeName || "-"}
+                                                            {item.name}
                                                         </p>
                                                     </div>
 
-                                                    <div className="flex-1 min-w-0 max-w-[10%]">
+                                                    <div className="flex-1 min-w-0 max-w-[40%]">
                                                         <p className="text-sm truncate">
-                                                            {item.numeroAnalisis || "-"}
+                                                            {item.description || "Sin descripción"}
                                                         </p>
                                                     </div>
 
-                                                    <div className="w-32 flex-shrink-0">
+                                                    <div className="w-40 flex-shrink-0">
                                                         <p className="text-sm truncate text-center">
                                                             {formatDateLiteral(item.createdAt)}
                                                         </p>
                                                     </div>
-                                                    
+
                                                     <div className="flex justify-center flex-shrink-0 w-16">
                                                         <Dropdown placement="bottom-end" className="bg-background dark:bg-background-200 shadow-large transition-colors duration-1000 ease-in-out" shadow="lg" radius="sm" classNames={{content: "min-w-44"}}>
                                                             <DropdownTrigger>
@@ -728,32 +563,21 @@ export const Products = () => {
                                                             </DropdownTrigger>
                                                             <DropdownMenu aria-label="Acciones" variant="light" itemClasses={{base:"mt-1 mb-2"}}>
                                                                 <DropdownSection title="Acciones" classNames={{ heading: "text-background-500 font-normal"}}>
-                                                                    {item.qrHash && (
-                                                                        <DropdownItem 
-                                                                            className="rounded-md transition-all !duration-1000 ease-in-out w-40"
-                                                                            key="handleViewQR"
-                                                                            startContent={<QrCodeFilled className="size-5"/>}
-                                                                            onPress={() => handleViewQR(item)}
-                                                                        >
-                                                                            Ver código QR
-                                                                        </DropdownItem>
-                                                                    )}
-
                                                                     {user.role === "ADMIN" &&
                                                                     <DropdownItem 
                                                                         className="rounded-md transition-all !duration-1000 ease-in-out w-40"
-                                                                        key="handleUpdateProduct"
+                                                                        key="handleUpdateWarehouseType"
                                                                         startContent={<EditFilled className="size-5"/>}
-                                                                        onPress={() => handleUpdateProduct(item)}
+                                                                        onPress={() => handleUpdateWarehouseType(item)}
                                                                     >
-                                                                        Actualizar producto
+                                                                        Actualizar tipo
                                                                     </DropdownItem>}
 
                                                                     <DropdownItem 
                                                                         className="rounded-md transition-all !duration-1000 ease-in-out w-40 -mt-1"
-                                                                        key="handleReadProduct"
+                                                                        key="handleReadWarehouseType"
                                                                         startContent={<ScriptFilled className="size-5"/>}
-                                                                        onPress={() => handleReadProduct(item)}
+                                                                        onPress={() => handleReadWarehouseType(item)}
                                                                     >
                                                                         Ver más detalles
                                                                     </DropdownItem>
@@ -761,9 +585,9 @@ export const Products = () => {
                                                                     {user.role === "ADMIN" &&
                                                                     <DropdownItem 
                                                                         className="rounded-md transition-all !duration-1000 ease-in-out w-40 -mb-1"
-                                                                        key="handleDeleteProduct"
+                                                                        key="handleDeleteWarehouseType"
                                                                         startContent={<DeleteFilled className="size-5"/>}
-                                                                        onPress={() => handleDeleteProduct(item)}
+                                                                        onPress={() => handleDeleteWarehouseType(item)}
                                                                     >
                                                                         Eliminar
                                                                     </DropdownItem>}
@@ -781,10 +605,9 @@ export const Products = () => {
                     </TableBody>
                 </Table>
             ) : null}
-            
-            <ProductsDeleteModal isOpen={isDeleteModalOpen} onOpenChange={setIsDeleteModalOpen} data={selectedProduct} onRefresh={triggerRefresh}/>
-            <ProductsDrawer isOpen={isDrawerOpen} onOpenChange={setIsDrawerOpen} data={selectedProduct} action={action} onRefresh={triggerRefresh}/>
-            <ProductQRModal isOpen={isQRModalOpen} onOpenChange={setIsQRModalOpen} product={selectedProduct}/>
+
+            <WarehouseTypesDeleteModal isOpen={isDeleteModalOpen} onOpenChange={setIsDeleteModalOpen} data={selectedWarehouseType} onRefresh={triggerRefresh}/>
+            <WarehouseTypesDrawer isOpen={isDrawerOpen} onOpenChange={setIsDrawerOpen} data={selectedWarehouseType} action={action} onRefresh={triggerRefresh}/>
         </>
     )
 }

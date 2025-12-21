@@ -117,23 +117,23 @@ export const ProductsModal = ({isOpen, onOpenChange, data, initialData, action, 
                                 </Tooltip>
                             )}
                         </div>
-                        {product.nombre && <p className="text-sm break-all"><span className="font-medium">Nombre: </span>{product.nombre}</p>}
-                        <p className="text-sm break-all"><span className="font-medium">Lote Proveedor: </span>{product.loteProveedor}</p>
-                        {product.numeroSerie && <p className="text-sm break-all"><span className="font-medium">N° Serie: </span>{product.numeroSerie}</p>}
                         {product.stockCatalogueName && <p className="text-sm break-all"><span className="font-medium">Catálogo: </span>{product.stockCatalogueName}</p>}
                         {product.productStatusName && <p className="text-sm break-all"><span className="font-medium">Estado: </span>{product.productStatusName}</p>}
-                        {product.warehouseTypeName && <p className="text-sm break-all"><span className="font-medium">Tipo de Almacén: </span>{product.warehouseTypeName}</p>}
-                        {product.unitOfMeasurementName && <p className="text-sm break-all"><span className="font-medium">Unidad de Medida: </span>{product.unitOfMeasurementName}{product.unitOfMeasurementCode ? ` (${product.unitOfMeasurementCode})` : ""}</p>}
+                        {product.nombre && <p className="text-sm break-all"><span className="font-medium">Nombre: </span>{product.nombre}</p>}
+                        <p className="text-sm break-all"><span className="font-medium">Código de Producto: </span>{product.codigoProducto}</p>
+                        {product.numeroSerie && <p className="text-sm break-all"><span className="font-medium">N° Serie: </span>{product.numeroSerie}</p>}
+                        <p className="text-sm break-all"><span className="font-medium">Lote Proveedor: </span>{product.loteProveedor}</p>
                         {product.fabricante && <p className="text-sm line-clamp-1 break-all"><span className="font-medium">Fabricante: </span>{product.fabricante}</p>}
                         {product.distribuidor && <p className="text-sm line-clamp-1 break-all"><span className="font-medium">Distribuidor: </span>{product.distribuidor}</p>}
-                        <p className="text-sm break-all"><span className="font-medium">Código de Producto: </span>{product.codigoProducto}</p>
-                        <p className="text-sm break-all"><span className="font-medium">Número de Análisis: </span>{product.numeroAnalisis}</p>
                         <p className="text-sm break-all"><span className="font-medium">Fecha de Ingreso: </span>{formatDateShort(product.fechaIngreso)}</p>
                         <p className="text-sm break-all"><span className="font-medium">Fecha de Caducidad: </span>{formatDateShort(product.fechaCaducidad)}</p>
                         <p className="text-sm break-all"><span className="font-medium">Fecha Reanálisis: </span>{formatDateShort(product.reanalisis)}</p>
-                        <p className="text-sm break-all"><span className="font-medium">Cantidad: </span>{product.cantidad}</p>
+                        {product.unitOfMeasurementName && <p className="text-sm break-all"><span className="font-medium">Unidad de Medida: </span>{product.unitOfMeasurementName}{product.unitOfMeasurementCode ? ` (${product.unitOfMeasurementCode})` : ""}</p>}
+                        {product.warehouseTypeName && <p className="text-sm break-all"><span className="font-medium">Tipo de Almacén: </span>{product.warehouseTypeName}</p>}
                         <p className="text-sm break-all"><span className="font-medium">Cantidad Total: </span>{product.cantidadTotal}</p>
                         <p className="text-sm break-all"><span className="font-medium">N° Contenedores: </span>{product.numeroContenedores}</p>
+                        <p className="text-sm break-all"><span className="font-medium">Número de Análisis: </span>{product.numeroAnalisis}</p>
+                        <p className="text-sm break-all"><span className="font-medium">Cantidad: </span>{product.cantidad}</p>
                         {product.qrHash && <p className="text-sm break-all"><span className="font-medium">Hash QR: </span>{product.qrHash}</p>}
                     </div>
                 </CardBody>

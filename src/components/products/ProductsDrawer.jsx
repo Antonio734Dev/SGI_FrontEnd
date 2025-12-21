@@ -455,37 +455,6 @@ export const ProductsDrawer = ({isOpen, onOpenChange, data, action, onRefresh}) 
                                         </SelectItem>
                                     ))}
                                 </Select>
-
-                                <Input
-                                    label={
-                                        <div className="flex items-center gap-1">
-                                            <p className="font-medium text-sm">Nombre</p>
-                                            <TextAsteriskFilled className="size-3 text-background-500 group-data-[focus=true]:text-primary group-data-[invalid=true]:!text-danger"/>
-                                        </div>
-                                    }
-                                    classNames={{ label: "font-medium !text-current transition-colors !duration-1000 ease-in-out", input: "transition-colors !duration-1000 ease-in-out font-medium !placeholder-background-500 placeholder:!font-normal", inputWrapper: "transition-colors !duration-1000 ease-in-out caret-primary bg-background-100 group-data-[hover=true]:border-background-200 group-data-[focus=true]:!border-primary border-transparent text-current" }}
-                                    name="nombre"
-                                    labelPlacement="outside"
-                                    type="text"
-                                    radius="sm"
-                                    variant="bordered"
-                                    maxLength={200}
-                                    isReadOnly={action !== 'create' && action !== 'update'}
-                                    placeholder={action === "create" ? "Ingrese el nombre" : data?.nombre}
-                                    value={product.nombre}
-                                    onValueChange={(value) => handleInputChange('nombre', value)}
-                                    isInvalid={(productErrors.nombre || []).length > 0}
-                                    errorMessage={() => (
-                                        <div className="flex text-danger">
-                                            <ul>
-                                                {(productErrors.nombre || []).map((error, i) => (
-                                                    <li key={i}>{error}</li>
-                                                ))}
-                                            </ul>
-                                        </div>
-                                    )}
-                                />
-
                                 <Select
                                     aria-label="Estado del Producto"
                                     className="w-full -mt-4"
@@ -542,246 +511,35 @@ export const ProductsDrawer = ({isOpen, onOpenChange, data, action, onRefresh}) 
                                     ))}
                                 </Select>
 
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                                    <Input
-                                        label={
-                                            <div className="flex items-center gap-1">
-                                                <p className="font-medium text-sm">Fecha de Ingreso</p>
-                                                <TextAsteriskFilled className="size-3 text-background-500 group-data-[focus=true]:text-primary group-data-[invalid=true]:!text-danger"/>
-                                            </div>
-                                        }
-                                        classNames={{ label: "font-medium !text-current transition-colors !duration-1000 ease-in-out", input: `transition-colors !duration-1000 ease-in-out font-medium !placeholder-background-500 placeholder:!font-normal ${(action === 'create' || action === 'update') && !product.fechaIngreso ? 'text-background-500 focus:text-current' : 'text-current'}`, inputWrapper: "transition-colors !duration-1000 ease-in-out caret-primary bg-background-100 group-data-[hover=true]:border-background-200 group-data-[focus=true]:!border-primary border-transparent text-current py-1" }}
-                                        name="fechaIngreso"
-                                        labelPlacement="outside"
-                                        type={action === 'create' || action === 'update' ? "date" : "text"}
-                                        radius="sm"
-                                        variant="bordered"
-                                        isReadOnly={action !== 'create' && action !== 'update'}
-                                        value={action === 'create' || action === 'update' ? product.fechaIngreso : formatDateShort(product.fechaIngreso)}
-                                        onValueChange={(value) => handleInputChange('fechaIngreso', value)}
-                                        isInvalid={productErrors.fechaIngreso.length > 0}
-                                        errorMessage={() => (
-                                            <div className="flex text-danger">
-                                                <ul>
-                                                    {productErrors.fechaIngreso.map((error, i) => (
-                                                        <li key={i}>{error}</li>
-                                                    ))}
-                                                </ul>
-                                            </div>
-                                        )}
-                                    />
-
-                                    <Input
-                                        label={
-                                            <div className="flex items-center gap-1">
-                                                <p className="font-medium text-sm">Fecha de Caducidad</p>
-                                                <TextAsteriskFilled className="size-3 text-background-500 group-data-[focus=true]:text-primary group-data-[invalid=true]:!text-danger"/>
-                                            </div>
-                                        }
-                                        classNames={{ label: "font-medium !text-current transition-colors !duration-1000 ease-in-out", input: `transition-colors !duration-1000 ease-in-out font-medium !placeholder-background-500 placeholder:!font-normal ${(action === 'create' || action === 'update') && !product.fechaCaducidad ? 'text-background-500 focus:text-current' : 'text-current'}`, inputWrapper: "transition-colors !duration-1000 ease-in-out caret-primary bg-background-100 group-data-[hover=true]:border-background-200 group-data-[focus=true]:!border-primary border-transparent text-current py-1" }}
-                                        name="fechaCaducidad"
-                                        labelPlacement="outside"
-                                        type={action === 'create' || action === 'update' ? "date" : "text"}
-                                        radius="sm"
-                                        variant="bordered"
-                                        isReadOnly={action !== 'create' && action !== 'update'}
-                                        value={action === 'create' || action === 'update' ? product.fechaCaducidad : formatDateShort(product.fechaCaducidad)}
-                                        onValueChange={(value) => handleInputChange('fechaCaducidad', value)}
-                                        isInvalid={productErrors.fechaCaducidad.length > 0}
-                                        errorMessage={() => (
-                                            <div className="flex text-danger">
-                                                <ul>
-                                                    {productErrors.fechaCaducidad.map((error, i) => (
-                                                        <li key={i}>{error}</li>
-                                                    ))}
-                                                </ul>
-                                            </div>
-                                        )}
-                                    />
-
-                                    <Input
-                                        className="sm:col-span-2"
-                                        label={
-                                            <div className="flex items-center gap-1">
-                                                <p className="font-medium text-sm">Fecha Reanálisis</p>
-                                                <TextAsteriskFilled className="size-3 text-background-500 group-data-[focus=true]:text-primary group-data-[invalid=true]:!text-danger"/>
-                                            </div>
-                                        }
-                                        classNames={{ label: "font-medium !text-current transition-colors !duration-1000 ease-in-out", input: `transition-colors !duration-1000 ease-in-out font-medium !placeholder-background-500 placeholder:!font-normal ${(action === 'create' || action === 'update') && !product.reanalisis ? 'text-background-500 focus:text-current' : 'text-current'}`, inputWrapper: "transition-colors !duration-1000 ease-in-out caret-primary bg-background-100 group-data-[hover=true]:border-background-200 group-data-[focus=true]:!border-primary border-transparent text-current py-1" }}
-                                        name="reanalisis"
-                                        labelPlacement="outside"
-                                        type={action === 'create' || action === 'update' ? "date" : "text"}
-                                        radius="sm"
-                                        variant="bordered"
-                                        isReadOnly={action !== 'create' && action !== 'update'}
-                                        value={action === 'create' || action === 'update' ? (product.reanalisis || "") : formatDateShort(product.reanalisis)}
-                                        onValueChange={(value) => handleInputChange('reanalisis', value)}
-                                        isInvalid={productErrors.reanalisis.length > 0}
-                                        errorMessage={() => (
-                                            <div className="flex text-danger">
-                                                <ul>
-                                                    {productErrors.reanalisis.map((error, i) => (
-                                                        <li key={i}>{error}</li>
-                                                    ))}
-                                                </ul>
-                                            </div>
-                                        )}
-                                    />
-                                </div>
-
-                                <Select
-                                    aria-label="Tipo de Almacén"
-                                    className="w-full -mt-4"
+                                <Input
                                     label={
                                         <div className="flex items-center gap-1">
-                                            <p className="font-medium text-sm">Tipo de Almacén</p>
+                                            <p className="font-medium text-sm">Nombre</p>
                                             <TextAsteriskFilled className="size-3 text-background-500 group-data-[focus=true]:text-primary group-data-[invalid=true]:!text-danger"/>
                                         </div>
                                     }
-                                    classNames={{value: "text-background-500 !font-normal", trigger: "bg-background-100 data-[hover=true]:!bg-background-100 border-transparent", popoverContent: "bg-background-100 rounded-lg", selectorIcon: "!text-background-500"}}
-                                    listboxProps={{
-                                        itemClasses: {
-                                            base: "!bg-transparent hover:!text-background-950/60 transition-colors duration-1000 ease-in-out",
-                                        }
-                                    }}
-                                    name="warehouseTypeId"
-                                    selectionMode="single"
-                                    disallowEmptySelection
-                                    selectorIcon={<ChevronDownFilled className="size-5"/>}
+                                    classNames={{ label: "font-medium !text-current transition-colors !duration-1000 ease-in-out", input: "transition-colors !duration-1000 ease-in-out font-medium !placeholder-background-500 placeholder:!font-normal", inputWrapper: "transition-colors !duration-1000 ease-in-out caret-primary bg-background-100 group-data-[hover=true]:border-background-200 group-data-[focus=true]:!border-primary border-transparent text-current" }}
+                                    name="nombre"
                                     labelPlacement="outside"
+                                    type="text"
                                     radius="sm"
                                     variant="bordered"
-                                    renderValue={(items) => {
-                                        const item = Array.from(items)[0]
-                                        if (!item) return action === "create" ? "Seleccione un tipo" : (product.warehouseTypeName || data?.warehouseTypeName || "Seleccione un tipo")
-                                        return item.textValue
-                                    }}
-                                    placeholder={
-                                        action === "create"
-                                            ? "Seleccione un tipo"
-                                            : (product.warehouseTypeName || data?.warehouseTypeName || "Seleccione un tipo")
-                                    }
-                                    selectedKeys={product.warehouseTypeId ? new Set([String(product.warehouseTypeId)]) : new Set([])}
-                                    onSelectionChange={(keys) => {
-                                        const [first] = Array.from(keys)
-                                        const selectedType = warehouseTypes.find(type => String(type.id) === String(first))
-
-                                        handleInputChange('warehouseTypeId', first)
-                                        if (selectedType) {
-                                            handleInputChange('warehouseTypeName', selectedType.name)
-                                        }
-                                    }}
-                                    isDisabled={action !== 'create' && action !== 'update'}
-                                    isInvalid={productErrors.warehouseTypeId.length > 0}
+                                    maxLength={200}
+                                    isReadOnly={action !== 'create' && action !== 'update'}
+                                    placeholder={action === "create" ? "Ingrese el nombre" : data?.nombre}
+                                    value={product.nombre}
+                                    onValueChange={(value) => handleInputChange('nombre', value)}
+                                    isInvalid={(productErrors.nombre || []).length > 0}
                                     errorMessage={() => (
                                         <div className="flex text-danger">
                                             <ul>
-                                                {productErrors.warehouseTypeId.map((error, i) => (
+                                                {(productErrors.nombre || []).map((error, i) => (
                                                     <li key={i}>{error}</li>
                                                 ))}
                                             </ul>
                                         </div>
                                     )}
-                                >
-                                    {warehouseTypes.map((type) => (
-                                        <SelectItem key={String(type.id)} value={String(type.id)} textValue={type.name}>
-                                            {type.name} ({type.code})
-                                        </SelectItem>
-                                    ))}
-                                </Select>
-
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                                    <Input
-                                        label={
-                                            <div className="flex items-center gap-1">
-                                                <p className="font-medium text-sm">Cantidad</p>
-                                                <TextAsteriskFilled className="size-3 text-background-500 group-data-[focus=true]:text-primary group-data-[invalid=true]:!text-danger"/>
-                                            </div>
-                                        }
-                                        classNames={{ label: "font-medium !text-current transition-colors !duration-1000 ease-in-out", input: "transition-colors !duration-1000 ease-in-out font-medium !placeholder-background-500 placeholder:!font-normal", inputWrapper: "transition-colors !duration-1000 ease-in-out caret-primary bg-background-100 group-data-[hover=true]:border-background-200 group-data-[focus=true]:!border-primary border-transparent text-current" }}
-                                        name="cantidad"
-                                        labelPlacement="outside"
-                                        type="number"
-                                        radius="sm"
-                                        variant="bordered"
-                                        isReadOnly={action !== 'create' && action !== 'update'}
-                                        placeholder={action === "create" ? "Ingrese la cantidad" : data?.cantidadSobrante}
-                                        value={product.cantidad}
-                                        onValueChange={(value) => handleInputChange('cantidad', value)}
-                                        isInvalid={productErrors.cantidad.length > 0}
-                                        errorMessage={() => (
-                                            <div className="flex text-danger">
-                                                <ul>
-                                                    {productErrors.cantidad.map((error, i) => (
-                                                        <li key={i}>{error}</li>
-                                                    ))}
-                                                </ul>
-                                            </div>
-                                        )}
-                                    />
-
-                                    <Select
-                                        aria-label="Unidad de Medida"
-                                        className="w-full -mt-4"
-                                        label={
-                                            <div className="flex items-center gap-1">
-                                                <p className="font-medium text-sm">Unidad de Medida</p>
-                                                <TextAsteriskFilled className="size-3 text-background-500 group-data-[focus=true]:text-primary group-data-[invalid=true]:!text-danger"/>
-                                            </div>
-                                        }
-                                        classNames={{value: "text-background-500 !font-normal", trigger: "bg-background-100 data-[hover=true]:!bg-background-100 border-transparent", popoverContent: "bg-background-100 rounded-lg", selectorIcon: "!text-background-500"}}
-                                        listboxProps={{
-                                            itemClasses: {
-                                                base: "!bg-transparent hover:!text-background-950/60 transition-colors duration-1000 ease-in-out",
-                                            }
-                                        }}
-                                        name="unitOfMeasurementId"
-                                        selectionMode="single"
-                                        disallowEmptySelection
-                                        selectorIcon={<ChevronDownFilled className="size-5"/>}
-                                        labelPlacement="outside"
-                                        radius="sm"
-                                        variant="bordered"
-                                        renderValue={(items) => {
-                                            const item = Array.from(items)[0]
-                                            if (!item) return action === "create" ? "Seleccione una unidad" : (product.unitOfMeasurementName || data?.unitOfMeasurementName || "Seleccione una unidad")
-                                            return item.textValue
-                                        }}
-                                        placeholder={
-                                            action === "create"
-                                                ? "Seleccione una unidad"
-                                                : (product.unitOfMeasurementName || data?.unitOfMeasurementName || "Seleccione una unidad")
-                                        }
-                                        selectedKeys={product.unitOfMeasurementId ? new Set([String(product.unitOfMeasurementId)]) : new Set([])}
-                                        onSelectionChange={(keys) => {
-                                            const [first] = Array.from(keys)
-                                            const selectedUnit = units.find(unit => String(unit.id) === String(first))
-
-                                            handleInputChange('unitOfMeasurementId', first)
-                                            if (selectedUnit) {
-                                                handleInputChange('unitOfMeasurementName', selectedUnit.name)
-                                                handleInputChange('unitOfMeasurementCode', selectedUnit.code)
-                                            }
-                                        }}
-                                        isDisabled={action !== 'create' && action !== 'update'}
-                                        isInvalid={productErrors.unitOfMeasurementId.length > 0}
-                                        errorMessage={() => (
-                                            <div className="flex text-danger">
-                                                <ul>
-                                                    {productErrors.unitOfMeasurementId.map((error, i) => (
-                                                        <li key={i}>{error}</li>
-                                                    ))}
-                                                </ul>
-                                            </div>
-                                        )}
-                                    >
-                                        {units.map((unit) => (
-                                            <SelectItem key={String(unit.id)} value={String(unit.id)} textValue={unit.name}>
-                                                {unit.name} ({unit.code})
-                                            </SelectItem>
-                                        ))}
-                                    </Select>
-                                </div>
+                                />
 
                                 <Input
                                     label={
@@ -810,6 +568,40 @@ export const ProductsDrawer = ({isOpen, onOpenChange, data, action, onRefresh}) 
                                         <div className="flex text-danger">
                                             <ul>
                                                 {productErrors.lote.map((error, i) => (
+                                                    <li key={i}>{error}</li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                    )}
+                                />
+
+                                <Input
+                                    label={
+                                        <div className="flex justify-between">
+                                            <div className="flex items-center gap-1">
+                                                <p className="font-medium text-sm">Código de Producto</p>
+                                                <TextAsteriskFilled className="size-3 text-background-500 group-data-[focus=true]:text-primary group-data-[invalid=true]:!text-danger"/>
+                                            </div>
+                                            <p className="!text-background-500 text-xs font-normal">{(product.codigoProducto || "").length + " / 50"}</p>
+                                        </div>
+                                    }
+                                    classNames={{ label: "w-full font-medium !text-current transition-colors !duration-1000 ease-in-out", input: "transition-colors !duration-1000 ease-in-out group-data-[invalid=true]:!text-current font-medium !placeholder-background-500 placeholder:!font-normal", mainWrapper: "group-data-[invalid=true]:animate-shake", inputWrapper: "transition-colors !duration-1000 ease-in-out caret-primary group-data-[invalid=true]:caret-danger bg-background-100 group-data-[hover=true]:border-background-200 group-data-[focus=true]:!border-primary group-data-[invalid=true]:!border-danger border-transparent text-current" }}
+                                    name="codigoProducto"
+                                    labelPlacement="outside"
+                                    type="text"
+                                    radius="sm"
+                                    variant="bordered"
+                                    maxLength={50}
+                                    isReadOnly={action !== 'create' && action !== 'update'}
+                                    placeholder={action === "create" ? "Ingrese el código de producto" : data?.codigoProducto}
+                                    value={product.codigoProducto || ""}
+                                    onValueChange={(value) => handleInputChange('codigoProducto', value)}
+                                    isInvalid={productErrors.codigoProducto.length > 0}
+                                    endContent={productErrors.codigoProducto.length === 0 && product.codigoProducto ? <CheckmarkFilled className='size-4 text-background-500 group-data-[focus=true]:text-primary' /> : productErrors.codigoProducto.length > 0 ? <DismissFilled className='size-4 text-danger' /> : null }
+                                    errorMessage={() => (
+                                        <div className="flex text-danger">
+                                            <ul>
+                                                {productErrors.codigoProducto.map((error, i) => (
                                                     <li key={i}>{error}</li>
                                                 ))}
                                             </ul>
@@ -911,74 +703,215 @@ export const ProductsDrawer = ({isOpen, onOpenChange, data, action, onRefresh}) 
                                     onValueChange={(value) => handleInputChange('distribuidor', value)}
                                 />
 
-                                <Input
-                                    label={
-                                        <div className="flex justify-between">
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                    <Input
+                                        label={
                                             <div className="flex items-center gap-1">
-                                                <p className="font-medium text-sm">Código de Producto</p>
+                                                <p className="font-medium text-sm">Fecha de Ingreso</p>
                                                 <TextAsteriskFilled className="size-3 text-background-500 group-data-[focus=true]:text-primary group-data-[invalid=true]:!text-danger"/>
                                             </div>
-                                            <p className="!text-background-500 text-xs font-normal">{(product.codigoProducto || "").length + " / 50"}</p>
+                                        }
+                                        classNames={{ label: "font-medium !text-current transition-colors !duration-1000 ease-in-out", input: `transition-colors !duration-1000 ease-in-out font-medium !placeholder-background-500 placeholder:!font-normal ${(action === 'create' || action === 'update') && !product.fechaIngreso ? 'text-background-500 focus:text-current' : 'text-current'}`, inputWrapper: "transition-colors !duration-1000 ease-in-out caret-primary bg-background-100 group-data-[hover=true]:border-background-200 group-data-[focus=true]:!border-primary border-transparent text-current py-1" }}
+                                        name="fechaIngreso"
+                                        labelPlacement="outside"
+                                        type={action === 'create' || action === 'update' ? "date" : "text"}
+                                        radius="sm"
+                                        variant="bordered"
+                                        isReadOnly={action !== 'create' && action !== 'update'}
+                                        value={action === 'create' || action === 'update' ? product.fechaIngreso : formatDateShort(product.fechaIngreso)}
+                                        onValueChange={(value) => handleInputChange('fechaIngreso', value)}
+                                        isInvalid={productErrors.fechaIngreso.length > 0}
+                                        errorMessage={() => (
+                                            <div className="flex text-danger">
+                                                <ul>
+                                                    {productErrors.fechaIngreso.map((error, i) => (
+                                                        <li key={i}>{error}</li>
+                                                    ))}
+                                                </ul>
+                                            </div>
+                                        )}
+                                    />
+
+                                    <Input
+                                        label={
+                                            <div className="flex items-center gap-1">
+                                                <p className="font-medium text-sm">Fecha de Caducidad</p>
+                                                <TextAsteriskFilled className="size-3 text-background-500 group-data-[focus=true]:text-primary group-data-[invalid=true]:!text-danger"/>
+                                            </div>
+                                        }
+                                        classNames={{ label: "font-medium !text-current transition-colors !duration-1000 ease-in-out", input: `transition-colors !duration-1000 ease-in-out font-medium !placeholder-background-500 placeholder:!font-normal ${(action === 'create' || action === 'update') && !product.fechaCaducidad ? 'text-background-500 focus:text-current' : 'text-current'}`, inputWrapper: "transition-colors !duration-1000 ease-in-out caret-primary bg-background-100 group-data-[hover=true]:border-background-200 group-data-[focus=true]:!border-primary border-transparent text-current py-1" }}
+                                        name="fechaCaducidad"
+                                        labelPlacement="outside"
+                                        type={action === 'create' || action === 'update' ? "date" : "text"}
+                                        radius="sm"
+                                        variant="bordered"
+                                        isReadOnly={action !== 'create' && action !== 'update'}
+                                        value={action === 'create' || action === 'update' ? product.fechaCaducidad : formatDateShort(product.fechaCaducidad)}
+                                        onValueChange={(value) => handleInputChange('fechaCaducidad', value)}
+                                        isInvalid={productErrors.fechaCaducidad.length > 0}
+                                        errorMessage={() => (
+                                            <div className="flex text-danger">
+                                                <ul>
+                                                    {productErrors.fechaCaducidad.map((error, i) => (
+                                                        <li key={i}>{error}</li>
+                                                    ))}
+                                                </ul>
+                                            </div>
+                                        )}
+                                    />
+
+                                    <Input
+                                        className="sm:col-span-2"
+                                        label={
+                                            <div className="flex items-center gap-1">
+                                                <p className="font-medium text-sm">Fecha Reanálisis</p>
+                                                <TextAsteriskFilled className="size-3 text-background-500 group-data-[focus=true]:text-primary group-data-[invalid=true]:!text-danger"/>
+                                            </div>
+                                        }
+                                        classNames={{ label: "font-medium !text-current transition-colors !duration-1000 ease-in-out", input: `transition-colors !duration-1000 ease-in-out font-medium !placeholder-background-500 placeholder:!font-normal ${(action === 'create' || action === 'update') && !product.reanalisis ? 'text-background-500 focus:text-current' : 'text-current'}`, inputWrapper: "transition-colors !duration-1000 ease-in-out caret-primary bg-background-100 group-data-[hover=true]:border-background-200 group-data-[focus=true]:!border-primary border-transparent text-current py-1" }}
+                                        name="reanalisis"
+                                        labelPlacement="outside"
+                                        type={action === 'create' || action === 'update' ? "date" : "text"}
+                                        radius="sm"
+                                        variant="bordered"
+                                        isReadOnly={action !== 'create' && action !== 'update'}
+                                        value={action === 'create' || action === 'update' ? (product.reanalisis || "") : formatDateShort(product.reanalisis)}
+                                        onValueChange={(value) => handleInputChange('reanalisis', value)}
+                                        isInvalid={productErrors.reanalisis.length > 0}
+                                        errorMessage={() => (
+                                            <div className="flex text-danger">
+                                                <ul>
+                                                    {productErrors.reanalisis.map((error, i) => (
+                                                        <li key={i}>{error}</li>
+                                                    ))}
+                                                </ul>
+                                            </div>
+                                        )}
+                                    />
+                                </div>
+
+                                <Select
+                                    aria-label="Unidad de Medida"
+                                    className="w-full -mt-4"
+                                    label={
+                                        <div className="flex items-center gap-1">
+                                            <p className="font-medium text-sm">Unidad de Medida</p>
+                                            <TextAsteriskFilled className="size-3 text-background-500 group-data-[focus=true]:text-primary group-data-[invalid=true]:!text-danger"/>
                                         </div>
                                     }
-                                    classNames={{ label: "w-full font-medium !text-current transition-colors !duration-1000 ease-in-out", input: "transition-colors !duration-1000 ease-in-out group-data-[invalid=true]:!text-current font-medium !placeholder-background-500 placeholder:!font-normal", mainWrapper: "group-data-[invalid=true]:animate-shake", inputWrapper: "transition-colors !duration-1000 ease-in-out caret-primary group-data-[invalid=true]:caret-danger bg-background-100 group-data-[hover=true]:border-background-200 group-data-[focus=true]:!border-primary group-data-[invalid=true]:!border-danger border-transparent text-current" }}
-                                    name="codigoProducto"
+                                    classNames={{value: "text-background-500 !font-normal", trigger: "bg-background-100 data-[hover=true]:!bg-background-100 border-transparent", popoverContent: "bg-background-100 rounded-lg", selectorIcon: "!text-background-500"}}
+                                    listboxProps={{
+                                        itemClasses: {
+                                            base: "!bg-transparent hover:!text-background-950/60 transition-colors duration-1000 ease-in-out",
+                                        }
+                                    }}
+                                    name="unitOfMeasurementId"
+                                    selectionMode="single"
+                                    disallowEmptySelection
+                                    selectorIcon={<ChevronDownFilled className="size-5"/>}
                                     labelPlacement="outside"
-                                    type="text"
                                     radius="sm"
                                     variant="bordered"
-                                    maxLength={50}
-                                    isReadOnly={action !== 'create' && action !== 'update'}
-                                    placeholder={action === "create" ? "Ingrese el código de producto" : data?.codigoProducto}
-                                    value={product.codigoProducto || ""}
-                                    onValueChange={(value) => handleInputChange('codigoProducto', value)}
-                                    isInvalid={productErrors.codigoProducto.length > 0}
-                                    endContent={productErrors.codigoProducto.length === 0 && product.codigoProducto ? <CheckmarkFilled className='size-4 text-background-500 group-data-[focus=true]:text-primary' /> : productErrors.codigoProducto.length > 0 ? <DismissFilled className='size-4 text-danger' /> : null }
+                                    renderValue={(items) => {
+                                        const item = Array.from(items)[0]
+                                        if (!item) return action === "create" ? "Seleccione una unidad" : (product.unitOfMeasurementName || data?.unitOfMeasurementName || "Seleccione una unidad")
+                                        return item.textValue
+                                    }}
+                                    placeholder={
+                                        action === "create"
+                                            ? "Seleccione una unidad"
+                                            : (product.unitOfMeasurementName || data?.unitOfMeasurementName || "Seleccione una unidad")
+                                    }
+                                    selectedKeys={product.unitOfMeasurementId ? new Set([String(product.unitOfMeasurementId)]) : new Set([])}
+                                    onSelectionChange={(keys) => {
+                                        const [first] = Array.from(keys)
+                                        const selectedUnit = units.find(unit => String(unit.id) === String(first))
+
+                                        handleInputChange('unitOfMeasurementId', first)
+                                        if (selectedUnit) {
+                                            handleInputChange('unitOfMeasurementName', selectedUnit.name)
+                                            handleInputChange('unitOfMeasurementCode', selectedUnit.code)
+                                        }
+                                    }}
+                                    isDisabled={action !== 'create' && action !== 'update'}
+                                    isInvalid={productErrors.unitOfMeasurementId.length > 0}
                                     errorMessage={() => (
                                         <div className="flex text-danger">
                                             <ul>
-                                                {productErrors.codigoProducto.map((error, i) => (
+                                                {productErrors.unitOfMeasurementId.map((error, i) => (
                                                     <li key={i}>{error}</li>
                                                 ))}
                                             </ul>
                                         </div>
                                     )}
-                                />
+                                >
+                                    {units.map((unit) => (
+                                        <SelectItem key={String(unit.id)} value={String(unit.id)} textValue={unit.name}>
+                                            {unit.name} ({unit.code})
+                                        </SelectItem>
+                                    ))}
+                                </Select>
 
-                                <Input
+                                <Select
+                                    aria-label="Tipo de Almacén"
+                                    className="w-full -mt-4"
                                     label={
-                                        <div className="flex justify-between">
-                                            <div className="flex items-center gap-1">
-                                                <p className="font-medium text-sm">Número de Análisis</p>
-                                                <TextAsteriskFilled className="size-3 text-background-500 group-data-[focus=true]:text-primary group-data-[invalid=true]:!text-danger"/>
-                                            </div>
-                                            <p className="!text-background-500 text-xs font-normal">{(product.numeroAnalisis || "").length + " / 50"}</p>
+                                        <div className="flex items-center gap-1">
+                                            <p className="font-medium text-sm">Tipo de Almacén</p>
+                                            <TextAsteriskFilled className="size-3 text-background-500 group-data-[focus=true]:text-primary group-data-[invalid=true]:!text-danger"/>
                                         </div>
                                     }
-                                    classNames={{ label: "w-full font-medium !text-current transition-colors !duration-1000 ease-in-out", input: "transition-colors !duration-1000 ease-in-out group-data-[invalid=true]:!text-current font-medium !placeholder-background-500 placeholder:!font-normal", mainWrapper: "group-data-[invalid=true]:animate-shake", inputWrapper: "transition-colors !duration-1000 ease-in-out caret-primary group-data-[invalid=true]:caret-danger bg-background-100 group-data-[hover=true]:border-background-200 group-data-[focus=true]:!border-primary group-data-[invalid=true]:!border-danger border-transparent text-current" }}
-                                    name="numeroAnalisis"
+                                    classNames={{value: "text-background-500 !font-normal", trigger: "bg-background-100 data-[hover=true]:!bg-background-100 border-transparent", popoverContent: "bg-background-100 rounded-lg", selectorIcon: "!text-background-500"}}
+                                    listboxProps={{
+                                        itemClasses: {
+                                            base: "!bg-transparent hover:!text-background-950/60 transition-colors duration-1000 ease-in-out",
+                                        }
+                                    }}
+                                    name="warehouseTypeId"
+                                    selectionMode="single"
+                                    disallowEmptySelection
+                                    selectorIcon={<ChevronDownFilled className="size-5"/>}
                                     labelPlacement="outside"
-                                    type="text"
                                     radius="sm"
                                     variant="bordered"
-                                    maxLength={50}
-                                    isReadOnly={action !== 'create' && action !== 'update'}
-                                    placeholder={action === "create" ? "Ingrese el número de análisis" : data?.numeroAnalisis}
-                                    value={product.numeroAnalisis || ""}
-                                    onValueChange={(value) => handleInputChange('numeroAnalisis', value)}
-                                    isInvalid={productErrors.numeroAnalisis.length > 0}
-                                    endContent={productErrors.numeroAnalisis.length === 0 && product.numeroAnalisis ? <CheckmarkFilled className='size-4 text-background-500 group-data-[focus=true]:text-primary' /> : productErrors.numeroAnalisis.length > 0 ? <DismissFilled className='size-4 text-danger' /> : null }
+                                    renderValue={(items) => {
+                                        const item = Array.from(items)[0]
+                                        if (!item) return action === "create" ? "Seleccione un tipo" : (product.warehouseTypeName || data?.warehouseTypeName || "Seleccione un tipo")
+                                        return item.textValue
+                                    }}
+                                    placeholder={
+                                        action === "create"
+                                            ? "Seleccione un tipo"
+                                            : (product.warehouseTypeName || data?.warehouseTypeName || "Seleccione un tipo")
+                                    }
+                                    selectedKeys={product.warehouseTypeId ? new Set([String(product.warehouseTypeId)]) : new Set([])}
+                                    onSelectionChange={(keys) => {
+                                        const [first] = Array.from(keys)
+                                        const selectedType = warehouseTypes.find(type => String(type.id) === String(first))
+
+                                        handleInputChange('warehouseTypeId', first)
+                                        if (selectedType) {
+                                            handleInputChange('warehouseTypeName', selectedType.name)
+                                        }
+                                    }}
+                                    isDisabled={action !== 'create' && action !== 'update'}
+                                    isInvalid={productErrors.warehouseTypeId.length > 0}
                                     errorMessage={() => (
                                         <div className="flex text-danger">
                                             <ul>
-                                                {productErrors.numeroAnalisis.map((error, i) => (
+                                                {productErrors.warehouseTypeId.map((error, i) => (
                                                     <li key={i}>{error}</li>
                                                 ))}
                                             </ul>
                                         </div>
                                     )}
-                                />
-
+                                >
+                                    {warehouseTypes.map((type) => (
+                                        <SelectItem key={String(type.id)} value={String(type.id)} textValue={type.name}>
+                                            {type.name} ({type.code})
+                                        </SelectItem>
+                                    ))}
+                                </Select>
                                 <Input
                                     label={
                                         <div className="flex items-center gap-1">
@@ -1030,6 +963,69 @@ export const ProductsDrawer = ({isOpen, onOpenChange, data, action, onRefresh}) 
                                         <div className="flex text-danger">
                                             <ul>
                                                 {productErrors.numeroContenedores.map((error, i) => (
+                                                    <li key={i}>{error}</li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                    )}
+                                />
+
+                                <Input
+                                    label={
+                                        <div className="flex justify-between">
+                                            <div className="flex items-center gap-1">
+                                                <p className="font-medium text-sm">Número de Análisis</p>
+                                                <TextAsteriskFilled className="size-3 text-background-500 group-data-[focus=true]:text-primary group-data-[invalid=true]:!text-danger"/>
+                                            </div>
+                                            <p className="!text-background-500 text-xs font-normal">{(product.numeroAnalisis || "").length + " / 50"}</p>
+                                        </div>
+                                    }
+                                    classNames={{ label: "w-full font-medium !text-current transition-colors !duration-1000 ease-in-out", input: "transition-colors !duration-1000 ease-in-out group-data-[invalid=true]:!text-current font-medium !placeholder-background-500 placeholder:!font-normal", mainWrapper: "group-data-[invalid=true]:animate-shake", inputWrapper: "transition-colors !duration-1000 ease-in-out caret-primary group-data-[invalid=true]:caret-danger bg-background-100 group-data-[hover=true]:border-background-200 group-data-[focus=true]:!border-primary group-data-[invalid=true]:!border-danger border-transparent text-current" }}
+                                    name="numeroAnalisis"
+                                    labelPlacement="outside"
+                                    type="text"
+                                    radius="sm"
+                                    variant="bordered"
+                                    maxLength={50}
+                                    isReadOnly={action !== 'create' && action !== 'update'}
+                                    placeholder={action === "create" ? "Ingrese el número de análisis" : data?.numeroAnalisis}
+                                    value={product.numeroAnalisis || ""}
+                                    onValueChange={(value) => handleInputChange('numeroAnalisis', value)}
+                                    isInvalid={productErrors.numeroAnalisis.length > 0}
+                                    endContent={productErrors.numeroAnalisis.length === 0 && product.numeroAnalisis ? <CheckmarkFilled className='size-4 text-background-500 group-data-[focus=true]:text-primary' /> : productErrors.numeroAnalisis.length > 0 ? <DismissFilled className='size-4 text-danger' /> : null }
+                                    errorMessage={() => (
+                                        <div className="flex text-danger">
+                                            <ul>
+                                                {productErrors.numeroAnalisis.map((error, i) => (
+                                                    <li key={i}>{error}</li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                    )}
+                                />
+
+                                <Input
+                                    label={
+                                        <div className="flex items-center gap-1">
+                                            <p className="font-medium text-sm">Cantidad</p>
+                                            <TextAsteriskFilled className="size-3 text-background-500 group-data-[focus=true]:text-primary group-data-[invalid=true]:!text-danger"/>
+                                        </div>
+                                    }
+                                    classNames={{ label: "font-medium !text-current transition-colors !duration-1000 ease-in-out", input: "transition-colors !duration-1000 ease-in-out font-medium !placeholder-background-500 placeholder:!font-normal", inputWrapper: "transition-colors !duration-1000 ease-in-out caret-primary bg-background-100 group-data-[hover=true]:border-background-200 group-data-[focus=true]:!border-primary border-transparent text-current" }}
+                                    name="cantidad"
+                                    labelPlacement="outside"
+                                    type="number"
+                                    radius="sm"
+                                    variant="bordered"
+                                    isReadOnly={action !== 'create' && action !== 'update'}
+                                    placeholder={action === "create" ? "Ingrese la cantidad" : data?.cantidadSobrante}
+                                    value={product.cantidad}
+                                    onValueChange={(value) => handleInputChange('cantidad', value)}
+                                    isInvalid={productErrors.cantidad.length > 0}
+                                    errorMessage={() => (
+                                        <div className="flex text-danger">
+                                            <ul>
+                                                {productErrors.cantidad.map((error, i) => (
                                                     <li key={i}>{error}</li>
                                                 ))}
                                             </ul>
