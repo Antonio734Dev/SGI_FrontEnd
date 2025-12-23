@@ -1,8 +1,10 @@
-import axios from 'axios'
+ import axios from 'axios'
+
+const baseURL = import.meta.env.VITE_API_BASE_URL || 'https://sgi-backend-ok03.onrender.com/api'
 
 const api = axios.create({
     withCredentials: true,
-    baseURL: process.env.NODE_ENV === 'production' ? '/api' : 'http://localhost:8080/api',
+    baseURL,
     timeout: 60000, //60 segundos
     headers: {
         "Content-Type": 'application/json',

@@ -6,6 +6,8 @@ import { PrimaryButton } from "../components/PrimaryButton";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth.jsx";
 
+const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || 'https://sgi-backend-ok03.onrender.com/api').replace(/\/+$/, '')
+
 export const Login = () => {
     const { login, user } = useAuth();
     const [isVisible, setIsVisible] = useState(false);
@@ -27,7 +29,7 @@ export const Login = () => {
         try {
             setIsLoading(true);
 
-            const response = await fetch("http://localhost:8080/api/auth/login", {
+            const response = await fetch(`${API_BASE_URL}/auth/login`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(data),

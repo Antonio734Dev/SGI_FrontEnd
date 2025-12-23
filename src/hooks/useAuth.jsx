@@ -6,6 +6,8 @@ import { Link, useLocation, useNavigate } from 'react-router';
 import { SecondaryButton } from '../components/SecondaryButton';
 import { useIsIconOnlySmall } from './useIsIconOnly';
 
+const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || 'https://sgi-backend-ok03.onrender.com/api').replace(/\/+$/, '')
+
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
@@ -53,7 +55,7 @@ export const AuthProvider = ({ children }) => {
     try {
       setIsLoading(true)
 
-      const response = await fetch("https://labmetricas-backend.onrender.com/api/auth/login", {
+      const response = await fetch(`${API_BASE_URL}/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
