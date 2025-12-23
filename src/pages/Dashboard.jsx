@@ -215,7 +215,7 @@ export const Dashboard = () => {
                                                     radius="lg"
                                                     isPressable
                                                     onPress={() => navigate('/App/ProductStatuses')}
-                                                    className="w-full bg-[#e5e5e5] dark:bg-[#2c2c2c] transition-colors duration-300 cursor-pointer"
+                                                    className="w-full bg-background-100 dark:bg-background-200 transition-colors duration-300 cursor-pointer"
                                                 >
                                                     <CardBody className="p-4">
                                                         <div className="flex items-center justify-between gap-3">
@@ -340,7 +340,7 @@ export const Dashboard = () => {
                                                 radius="lg"
                                                 isPressable
                                                 onPress={() => navigate('/App/Products')}
-                                                className="bg-[#e5e5e5] dark:bg-[#e5e5e5] transition-all duration-300 hover:shadow-lg hover:-translate-y-1 cursor-pointer w-full h-full"
+                                                className="bg-background-100 dark:bg-background-200 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 cursor-pointer w-full h-full"
                                             >
                                                 <CardBody className="p-6">
                                                     <div className="flex items-start justify-between gap-4">

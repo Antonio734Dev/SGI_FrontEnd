@@ -192,7 +192,7 @@ export const Logs = () => {
         const endIndex = Math.min(page * rowsPerPage, totalFiltered)
 
         return (
-            <div className="flex justify-between gap-4 items-center px-1 n2">
+            <div className="flex flex-col xs:flex-row xs:justify-between gap-2 xs:gap-4 xs:items-center px-1 n2">
                 <div className="flex flex-col n7">
                     <p className="text-lg font-bold">Logs</p>
                     <span className="text-background-500 text-xs">
@@ -204,7 +204,7 @@ export const Logs = () => {
                     </span>
                 </div>
 
-                <div className="flex gap-2 sm:gap-4">
+                <div className="flex w-full xs:w-auto justify-end flex-wrap gap-2 sm:gap-4">
                     <Popover placement="bottom" shadow="lg" radius="sm">
                         <PopoverTrigger>
                             <Button
@@ -347,7 +347,7 @@ export const Logs = () => {
             ],
             wrapper: "rounded-[9px] n3 gap-0 overflow-y-auto overflow-x-auto md:pt-0 md:pb-0 md:pl-2 md:pr-2 p-1 transition-colors duration-1000 bg-transparent [&::-webkit-scrollbar-corner]:bg-transparent [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar]:h-1 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-primary", // Ajuste principal
             base: "h-full",
-            table: "bg-transparent",
+            table: "bg-transparent md:min-w-[900px]",
             emptyWrapper: "text-background-950 text-sm"
         }), [],
     )
