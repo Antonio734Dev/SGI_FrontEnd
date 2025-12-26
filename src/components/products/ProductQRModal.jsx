@@ -63,7 +63,7 @@ export const ProductQRModal = ({ isOpen, onOpenChange, product }) => {
       classNames={{ wrapper: "overflow-hidden", backdrop: "bg-black/20" }}
       ref={targetRef}
     >
-      <ModalContent className="bg-background">
+      <ModalContent className="bg-background max-h-[80dvh]">
         {(onClose) => (
           <>
             <ModalHeader
@@ -81,7 +81,7 @@ export const ProductQRModal = ({ isOpen, onOpenChange, product }) => {
                 Código QR del producto
               </p>
             </ModalHeader>
-            <ModalBody className="py-6 gap-6 overflow-x-hidden">
+            <ModalBody className="py-6 gap-6 overflow-x-hidden overflow-y-auto [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-primary">
               <div className="flex flex-col items-center gap-6 w-full overflow-x-hidden">
                 <div className="bg-white p-4 rounded-lg shadow-large">
                   {isLoadingQr ? (
@@ -205,13 +205,13 @@ export const ProductQRModal = ({ isOpen, onOpenChange, product }) => {
                       </p>
                     </div>
                   )}
-                  {product?.muestreo && (
+                  {(product?.muestreo || product?.fechaMuestreo) && (
                     <div className="flex justify-between gap-4">
                       <p className="text-sm text-background-500">
                         Fecha muestreo:
                       </p>
                       <p className="text-sm font-medium break-all text-right">
-                        {product.muestreo}
+                        {product?.muestreo ?? product?.fechaMuestreo}
                       </p>
                     </div>
                   )}
