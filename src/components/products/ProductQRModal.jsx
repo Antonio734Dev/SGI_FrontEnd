@@ -68,12 +68,12 @@ export const ProductQRModal = ({ isOpen, onOpenChange, product }) => {
       }}
       ref={targetRef}
     >
-      <ModalContent className="bg-background w-[100vw] sm:w-auto max-w-none sm:max-w-[36rem] h-[100dvh] sm:h-auto rounded-none sm:rounded-2xl">
+      <ModalContent className="bg-background w-[100vw] sm:w-auto max-w-none sm:max-w-[36rem] h-[100dvh] rounded-none sm:rounded-2xl flex flex-col overflow-hidden">
         {(onClose) => (
           <>
             <ModalHeader
               {...moveProps}
-              className="flex flex-col gap-2 pb-3 pt-3 sm:pb-4 sm:pt-4"
+              className="flex-none flex flex-col gap-2 pb-3 pt-3 sm:pb-4 sm:pt-4"
             >
               <div className="w-full flex justify-between items-center">
                 <div className="flex items-center gap-2">
@@ -86,7 +86,7 @@ export const ProductQRModal = ({ isOpen, onOpenChange, product }) => {
                 Código QR del producto
               </p>
             </ModalHeader>
-            <ModalBody className="py-4 sm:py-6 gap-4 sm:gap-6 overflow-y-auto overflow-x-hidden">
+            <ModalBody className="flex-1 min-h-0 py-4 sm:py-6 gap-4 sm:gap-6 overflow-y-auto overflow-x-hidden">
               <div className="flex flex-col items-center gap-6 w-full overflow-x-hidden">
                 <div className="bg-white p-3 sm:p-4 rounded-lg shadow-large">
                   {isLoadingQr ? (
@@ -261,8 +261,8 @@ export const ProductQRModal = ({ isOpen, onOpenChange, product }) => {
                 </div>
 
                 <Button
-                  className="w-full tracking-wide font-medium data-[hover=true]:-translate-y-1"
-                  radius="sm"
+                  className="w-full min-h-[48px] h-12 tracking-wide font-medium text-sm sm:text-base rounded-[10px] data-[hover=true]:-translate-y-1"
+                  radius="none"
                   variant="shadow"
                   color="primary"
                   startContent={<ArrowDownloadFilled className="size-5" />}
