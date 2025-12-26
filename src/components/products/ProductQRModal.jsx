@@ -58,17 +58,22 @@ export const ProductQRModal = ({ isOpen, onOpenChange, product }) => {
       size="lg"
       radius="lg"
       className="my-0"
+      scrollBehavior="inside"
+      placement="center"
       isOpen={isOpen}
       onOpenChange={onOpenChange}
-      classNames={{ wrapper: "overflow-hidden", backdrop: "bg-black/20" }}
+      classNames={{
+        wrapper: "overflow-hidden p-0 sm:p-4",
+        backdrop: "bg-black/20",
+      }}
       ref={targetRef}
     >
-      <ModalContent className="bg-background">
+      <ModalContent className="bg-background w-[100vw] sm:w-auto max-w-none sm:max-w-[36rem] h-[100dvh] sm:h-auto rounded-none sm:rounded-2xl">
         {(onClose) => (
           <>
             <ModalHeader
               {...moveProps}
-              className="flex flex-col gap-2 pb-4 pt-4"
+              className="flex flex-col gap-2 pb-3 pt-3 sm:pb-4 sm:pt-4"
             >
               <div className="w-full flex justify-between items-center">
                 <div className="flex items-center gap-2">
@@ -81,60 +86,64 @@ export const ProductQRModal = ({ isOpen, onOpenChange, product }) => {
                 Código QR del producto
               </p>
             </ModalHeader>
-            <ModalBody className="py-6 gap-6 overflow-x-hidden">
+            <ModalBody className="py-4 sm:py-6 gap-4 sm:gap-6 overflow-y-auto overflow-x-hidden">
               <div className="flex flex-col items-center gap-6 w-full overflow-x-hidden">
-                <div className="bg-white p-4 rounded-lg shadow-large">
+                <div className="bg-white p-3 sm:p-4 rounded-lg shadow-large">
                   {isLoadingQr ? (
-                    <div className="w-64 h-64 flex items-center justify-center">
+                    <div className="w-52 h-52 sm:w-60 sm:h-60 md:w-64 md:h-64 flex items-center justify-center">
                       <Spinner color="primary" size="lg" />
                     </div>
                   ) : qrImage ? (
-                    <img src={qrImage} alt="QR Code" className="w-64 h-64" />
+                    <img
+                      src={qrImage}
+                      alt="QR Code"
+                      className="w-52 h-52 sm:w-60 sm:h-60 md:w-64 md:h-64 object-contain"
+                    />
                   ) : (
-                    <div className="w-64 h-64 flex flex-col items-center justify-center bg-background-100 rounded-lg">
+                    <div className="w-52 h-52 sm:w-60 sm:h-60 md:w-64 md:h-64 flex flex-col items-center justify-center bg-background-100 rounded-lg">
                       <QrCodeFilled className="size-16 text-background-500" />
                       <p className="text-background-500 mt-4">No disponible</p>
                     </div>
                   )}
                 </div>
 
-                <div className="w-full flex flex-col gap-2 bg-background-100 p-4 rounded-lg overflow-x-hidden">
+                <div className="w-full flex flex-col gap-2 bg-background-100 p-3 sm:p-4 rounded-lg overflow-x-hidden">
                   <div className="flex justify-between gap-4">
-                    <p className="text-sm text-background-500 flex-shrink-0">
+                    <p className="text-xs sm:text-sm text-background-500 flex-shrink-0">
                       Lote:
                     </p>
-                    <p className="text-sm font-medium break-all text-right">
+                    <p className="text-xs sm:text-sm font-medium break-all text-right">
                       {product?.lote}
                     </p>
                   </div>
                   <div className="flex justify-between gap-4">
-                    <p className="text-sm text-background-500 flex-shrink-0">
+                    <p className="text-xs sm:text-sm text-background-500 flex-shrink-0">
                       Lote Proveedor:
                     </p>
-                    <p className="text-sm font-medium break-all text-right">
+                    <p className="text-xs sm:text-sm font-medium break-all text-right">
                       {product?.loteProveedor}
                     </p>
                   </div>
                   {product?.stockCatalogueName && (
                     <div className="flex justify-between gap-4">
-                      <p className="text-sm text-background-500">Catálogo:</p>
-                      <p className="text-sm font-medium break-all text-right">
+                      <p className="text-xs sm:text-sm text-background-500">Catálogo:</p>
+                      <p className="text-xs sm:text-sm font-medium break-all text-right">
                         {product.stockCatalogueName}
                       </p>
                     </div>
                   )}
                   {product?.productStatusName && (
                     <div className="flex justify-between gap-4">
-                      <p className="text-sm text-background-500">Estado:</p>
-                      <p className="text-sm font-medium break-all text-right">
+                      <p className="text-xs sm:text-sm text-background-500">Estado:</p>
+                      <p className="text-xs sm:text-sm font-medium break-all text-right">
                         {product.productStatusName}
                       </p>
                     </div>
                   )}
                   {product?.unitOfMeasurementName && (
                     <div className="flex justify-between gap-4">
-                      <p className="text-sm text-background-500">Unidad:</p>
-                      <p className="text-sm font-medium break-all text-right">
+                      <p className="text-xs sm:text-sm text-background-500">Unidad:</p>
+                      <p className="text-xs sm:text-sm font-medium break-all text-right">
                         {product.unitOfMeasurementName} (
                         {product.unitOfMeasurementCode})
                       </p>
@@ -142,10 +151,10 @@ export const ProductQRModal = ({ isOpen, onOpenChange, product }) => {
                   )}
                   {product?.warehouseTypeName && (
                     <div className="flex justify-between gap-4">
-                      <p className="text-sm text-background-500">
+                      <p className="text-xs sm:text-sm text-background-500">
                         Tipo Almacén:
                       </p>
-                      <p className="text-sm font-medium break-all text-right">
+                      <p className="text-xs sm:text-sm font-medium break-all text-right">
                         {product.warehouseTypeName}
                       </p>
                     </div>
@@ -153,10 +162,10 @@ export const ProductQRModal = ({ isOpen, onOpenChange, product }) => {
 
                   {product?.codigoProducto && (
                     <div className="flex justify-between gap-4">
-                      <p className="text-sm text-background-500">
+                      <p className="text-xs sm:text-sm text-background-500">
                         Código Producto:
                       </p>
-                      <p className="text-sm font-medium break-all text-right">
+                      <p className="text-xs sm:text-sm font-medium break-all text-right">
                         {product.codigoProducto}
                       </p>
                     </div>
@@ -164,10 +173,10 @@ export const ProductQRModal = ({ isOpen, onOpenChange, product }) => {
 
                   {product?.numeroAnalisis && (
                     <div className="flex justify-between gap-4">
-                      <p className="text-sm text-background-500">
+                      <p className="text-xs sm:text-sm text-background-500">
                         N° Análisis:
                       </p>
-                      <p className="text-sm font-medium break-all text-right">
+                      <p className="text-xs sm:text-sm font-medium break-all text-right">
                         {product.numeroAnalisis}
                       </p>
                     </div>
@@ -175,10 +184,10 @@ export const ProductQRModal = ({ isOpen, onOpenChange, product }) => {
 
                   {product?.fecha && (
                     <div className="flex justify-between gap-4">
-                      <p className="text-sm text-background-500">
+                      <p className="text-xs sm:text-sm text-background-500">
                         Fecha Ingreso:
                       </p>
-                      <p className="text-sm font-medium break-all text-right">
+                      <p className="text-xs sm:text-sm font-medium break-all text-right">
                         {product.fecha}
                       </p>
                     </div>
@@ -186,10 +195,10 @@ export const ProductQRModal = ({ isOpen, onOpenChange, product }) => {
 
                   {product?.caducidad && (
                     <div className="flex justify-between gap-4">
-                      <p className="text-sm text-background-500">
+                      <p className="text-xs sm:text-sm text-background-500">
                         Fecha Caducidad:
                       </p>
-                      <p className="text-sm font-medium break-all text-right">
+                      <p className="text-xs sm:text-sm font-medium break-all text-right">
                         {product.caducidad}
                       </p>
                     </div>
@@ -197,54 +206,54 @@ export const ProductQRModal = ({ isOpen, onOpenChange, product }) => {
 
                   {product?.reanalisis && (
                     <div className="flex justify-between gap-4">
-                      <p className="text-sm text-background-500">
+                      <p className="text-xs sm:text-sm text-background-500">
                         Fecha Reanálisis:
                       </p>
-                      <p className="text-sm font-medium break-all text-right">
+                      <p className="text-xs sm:text-sm font-medium break-all text-right">
                         {product.reanalisis}
                       </p>
                     </div>
                   )}
                   {product?.muestreo && (
                     <div className="flex justify-between gap-4">
-                      <p className="text-sm text-background-500">
+                      <p className="text-xs sm:text-sm text-background-500">
                         Fecha muestreo:
                       </p>
-                      <p className="text-sm font-medium break-all text-right">
+                      <p className="text-xs sm:text-sm font-medium break-all text-right">
                         {product.muestreo}
                       </p>
                     </div>
                   )}
                   <div className="flex justify-between gap-4">
-                    <p className="text-sm text-background-500">
+                    <p className="text-xs sm:text-sm text-background-500">
                       Cantidad Total:
                     </p>
-                    <p className="text-sm font-medium break-all text-right">
+                    <p className="text-xs sm:text-sm font-medium break-all text-right">
                       {product?.cantidadTotal}
                     </p>
                   </div>
                   <div className="flex justify-between gap-4">
-                    <p className="text-sm text-background-500">
+                    <p className="text-xs sm:text-sm text-background-500">
                       N° Contenedores:
                     </p>
-                    <p className="text-sm font-medium break-all text-right">
+                    <p className="text-xs sm:text-sm font-medium break-all text-right">
                       {product?.numeroContenedores}
                     </p>
                   </div>
                   {product?.fabricante && (
                     <div className="flex justify-between gap-4">
-                      <p className="text-sm text-background-500">Fabricante:</p>
-                      <p className="text-sm font-medium break-all text-right">
+                      <p className="text-xs sm:text-sm text-background-500">Fabricante:</p>
+                      <p className="text-xs sm:text-sm font-medium break-all text-right">
                         {product.fabricante}
                       </p>
                     </div>
                   )}
                   {product?.distribuidor && (
                     <div className="flex justify-between gap-4">
-                      <p className="text-sm text-background-500">
+                      <p className="text-xs sm:text-sm text-background-500">
                         Distribuidor:
                       </p>
-                      <p className="text-sm font-medium break-all text-right">
+                      <p className="text-xs sm:text-sm font-medium break-all text-right">
                         {product.distribuidor}
                       </p>
                     </div>
